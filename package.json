@@ -1,0 +1,51 @@
+{
+  "name": "wish-wheel-game",
+  "version": "1.0.0",
+  "description": "Wish wheel game application",
+  "author": "laksby",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/laksby/wish-wheel-game.git"
+  },
+  "scripts": {
+    "build": "gatsby build",
+    "develop": "gatsby develop",
+    "start": "npm run develop",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean",
+    "test": "npm run test:transpile && npm run test:eslint && npm run test:cspell",
+    "test:transpile": "tsc --project tsconfig.json --noEmit --skipLibCheck",
+    "test:eslint": "eslint '*/**/*.{ts,tsx}'",
+    "test:cspell": "cspell '*/**/*.{ts,tsx,d.ts}'",
+    "prettier": "prettier --write \"./**/*.*\"",
+    "prettier:staged": "pretty-quick --staged"
+  },
+  "dependencies": {
+    "gatsby": "^2.32.6",
+    "gatsby-plugin-react-helmet": "^3.10.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-helmet": "^6.1.0"
+  },
+  "devDependencies": {
+    "@types/react-helmet": "^6.1.0",
+    "@typescript-eslint/eslint-plugin": "^4.15.2",
+    "@typescript-eslint/parser": "^4.15.2",
+    "cspell": "^5.2.4",
+    "cspell-dict-ru_ru": "^1.4.0",
+    "eslint": "^7.20.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-react": "^7.22.0",
+    "husky": "^5.1.1",
+    "prettier": "^2.2.1",
+    "pretty-quick": "^3.1.0",
+    "typescript": "^4.2.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run prettier:staged"
+    }
+  }
+}
