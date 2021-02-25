@@ -1,11 +1,14 @@
 import React, { FC } from 'react';
-import { Layout, SEO } from '../components';
+import { BooleanParam, useQueryParam } from 'use-query-params';
+import { Layout, SEO, Wheel } from '../components';
 
 const IndexPage: FC = () => {
+  const [isFullscreen] = useQueryParam('f', BooleanParam);
+
   return (
-    <Layout>
+    <Layout isFullscreen={!!isFullscreen}>
       <SEO />
-      Hello World!
+      <Wheel />
     </Layout>
   );
 };
