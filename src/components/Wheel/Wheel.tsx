@@ -14,10 +14,13 @@ export const Wheel: FC<Props> = props => {
   const { sectorCount, sectors } = props;
 
   const [running, setRunning] = useState(false);
+  const [, setSelectedSector] = useState<SectorData>();
   const circleRef = useRef<SVGGElement>(undefined!);
   const visibleSectors = useMemo(() => sectors.slice(0, sectorCount), [sectorCount]);
 
+  const animationSpeed = 300;
   const sectorStep = 360 / sectorCount;
+  const sectorDuration = animationSpeed / sectorCount;
   const sectorPosition = -sectorStep / 2;
   const side = 300;
   const padding = 6;
@@ -51,6 +54,10 @@ export const Wheel: FC<Props> = props => {
       animation.play();
     } else {
       animation.pause();
+      const currentTime = animation.currentTime ?? 0;
+      const sectorIndex = Math.ceil(currentTime / sectorDuration) % sectorCount;
+      const sector = visibleSectors[sectorIndex];
+      setSelectedSector(sector);
     }
 
     setRunning(r => !r);
@@ -59,7 +66,7 @@ export const Wheel: FC<Props> = props => {
   return (
     <Container scale={1}>
       <svg viewBox={`0 0 ${side} ${side}`} xmlns="http://www.w3.org/2000/svg">
-        <Circle ref={circleRef} animationSpeed={300}>
+        <Circle ref={circleRef} animationSpeed={animationSpeed}>
           <circle
             cx={center}
             cy={center}

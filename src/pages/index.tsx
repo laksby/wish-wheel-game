@@ -1,5 +1,4 @@
 import React, { FC, useCallback, useState } from 'react';
-import { BooleanParam, useQueryParam } from 'use-query-params';
 import { Controls, Layout, SEO, Wheel } from '../components';
 import balloonImage from '../images/sectors/001-balloon.svg';
 import discoBallImage from '../images/sectors/002-disco ball.svg';
@@ -13,7 +12,6 @@ import iceCreamImage from '../images/sectors/018-ice cream.svg';
 import hotdogImage from '../images/sectors/021-hotdog.svg';
 
 const IndexPage: FC = () => {
-  const [isFullscreen] = useQueryParam('f', BooleanParam);
   const [sectorCount, setSectorCount] = useState(6);
 
   const handleControlClick = useCallback((type: string, payload: any) => {
@@ -25,21 +23,21 @@ const IndexPage: FC = () => {
   }, []);
 
   return (
-    <Layout isFullscreen={!!isFullscreen}>
+    <Layout>
       <SEO />
       <Wheel
         sectorCount={sectorCount}
         sectors={[
-          { color: '#F4F6F8', image: cakeImage },
-          { color: '#F5B945', image: balloonImage },
-          { color: '#F36A50', image: prizeImage },
-          { color: '#EB86BE', image: cocktailImage },
-          { color: '#5E9CEA', image: bbqImage },
-          { color: '#65D4F1', image: iceCreamImage },
-          { color: '#74B0F3', image: hotdogImage },
-          { color: '#9579DA', image: champagneImage },
-          { color: '#FFD67B', image: pizzaImage },
-          { color: '#EB5463', image: discoBallImage },
+          { color: '#F4F6F8', image: cakeImage, type: 'cake' },
+          { color: '#F5B945', image: balloonImage, type: 'balloon' },
+          { color: '#F36A50', image: prizeImage, type: 'prize' },
+          { color: '#EB86BE', image: cocktailImage, type: 'cocktail' },
+          { color: '#5E9CEA', image: bbqImage, type: 'bbq' },
+          { color: '#65D4F1', image: iceCreamImage, type: 'ice-cream' },
+          { color: '#74B0F3', image: hotdogImage, type: 'hotdog' },
+          { color: '#9579DA', image: champagneImage, type: 'champagne' },
+          { color: '#FFD67B', image: pizzaImage, type: 'pizza' },
+          { color: '#EB5463', image: discoBallImage, type: 'disco-ball' },
         ]}
       />
       <Controls

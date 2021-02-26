@@ -4,7 +4,8 @@
     "**/bower_components": true,
     "**/*.code-search": true,
     "**/*.cache": true,
-    "**/coverage": true
+    "**/coverage": true,
+    "**/public": true
   },
   "cSpell.language": "en,ru"
 }

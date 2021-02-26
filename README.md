@@ -19,7 +19,7 @@ git clone https://github.com/laksby/wish-wheel-game.git
 Setup project
 
 ```bash
-yarn install
+yarn bootstrap
 ```
 
 Start project locally
