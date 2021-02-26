@@ -13,6 +13,17 @@ export function getSectorPath(
   return `M${x} ${y} ${cx1} ${cy1} A${radius} ${radius} 0 0 1 ${cx2} ${cy2}Z`;
 }
 
+export function getSectorCenter(
+  x: number,
+  y: number,
+  spread: number,
+  angle: number,
+): [number, number] {
+  const cx = (Math.cos(degreesToRadians(angle)) * spread) / 2 + x;
+  const cy = (-Math.sin(degreesToRadians(angle)) * spread) / 2 + y;
+  return [cx, cy];
+}
+
 export function degreesToRadians(degrees: number): number {
   return (Math.PI / 180) * degrees;
 }

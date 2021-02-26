@@ -2,7 +2,7 @@ import React, { FC, useCallback, useMemo, useRef, useState } from 'react';
 import useKey from 'react-use/lib/useKey';
 import styled, { keyframes } from 'styled-components';
 import wheelButton from '../../images/wheel-button.svg';
-import { getSectorPath } from './tools';
+import { getSectorCenter, getSectorPath } from './tools';
 import { SectorData } from './types';
 
 interface Props {
@@ -13,13 +13,12 @@ interface Props {
 export const Wheel: FC<Props> = props => {
   const { sectorCount, sectors } = props;
 
-  const [rotation, setRotation] = useState(0);
   const [running, setRunning] = useState(false);
   const circleRef = useRef<SVGGElement>(undefined!);
   const visibleSectors = useMemo(() => sectors.slice(0, sectorCount), [sectorCount]);
 
   const sectorStep = 360 / sectorCount;
-  const sectorPosition = rotation - sectorStep / 2;
+  const sectorPosition = -sectorStep / 2;
   const side = 300;
   const padding = 6;
   const center = side / 2;
@@ -29,6 +28,8 @@ export const Wheel: FC<Props> = props => {
   const innerRadius = outerRadius - outerRingWidth;
   const centerRadius = 30;
   const centerImageSize = centerRadius * 2 + strokeWidth;
+  const imageSize = Math.min(((side / 8) * 6) / sectorCount, side / 8);
+  const imageCircleRadius = imageSize * 1.1;
   const selectorHeight = 20;
   const selectorWidth = 20;
   const selectorInnerDepth = side - padding - selectorWidth + strokeWidth * 2;
@@ -50,7 +51,6 @@ export const Wheel: FC<Props> = props => {
       animation.play();
     } else {
       animation.pause();
-      setRotation(rot => rot + sectorStep);
     }
 
     setRunning(r => !r);
@@ -75,19 +75,41 @@ export const Wheel: FC<Props> = props => {
             strokeWidth={strokeWidth}
           />
           {visibleSectors.map((sector, index) => {
+            const sectorCenter = getSectorCenter(
+              center,
+              center,
+              innerRadius + centerRadius,
+              sectorPosition + sectorStep / 2 + index * sectorStep,
+            );
             return (
-              <path
-                key={index}
-                d={getSectorPath(
-                  center,
-                  center,
-                  innerRadius,
-                  sectorPosition + index * sectorStep,
-                  sectorPosition + (index + 1) * sectorStep,
-                )}
-                fill={sector.color}
-                strokeWidth={strokeWidth}
-              />
+              <g key={index}>
+                <path
+                  d={getSectorPath(
+                    center,
+                    center,
+                    innerRadius,
+                    sectorPosition + index * sectorStep,
+                    sectorPosition + (index + 1) * sectorStep,
+                  )}
+                  fill={sector.color}
+                  strokeWidth={strokeWidth}
+                />
+                <circle
+                  cx={sectorCenter[0]}
+                  cy={sectorCenter[1]}
+                  r={imageCircleRadius}
+                  strokeWidth={strokeWidth}
+                  fill="#f4f6f8"
+                  opacity={0.4}
+                />
+                <image
+                  href={sector.image}
+                  x={sectorCenter[0] - imageSize / 2}
+                  y={sectorCenter[1] - imageSize / 2}
+                  width={imageSize}
+                  height={imageSize}
+                />
+              </g>
             );
           })}
           <circle

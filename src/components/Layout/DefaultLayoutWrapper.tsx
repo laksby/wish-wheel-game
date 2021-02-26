@@ -13,7 +13,7 @@ const Root = styled.div`
   right: 0;
   bottom: 0;
   left: 0;
-  overflow: auto;
+  overflow: hidden;
   z-index: 100;
   display: flex;
   align-items: center;
