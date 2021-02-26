@@ -1,8 +1,8 @@
-import React, { FC, useEffect, useMemo, useRef } from 'react';
-import styled, { keyframes } from 'styled-components';
-import wheelButton from '../../images/wheel-button.svg';
-import { getSectorCenter, getSectorPath } from './tools';
+import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
+import styled from 'styled-components';
 import { SectorData } from '../../common';
+import wheelButton from '../../images/wheel-button.svg';
+import { getRotationFromMatrixNotation, getSectorCenter, getSectorPath } from './tools';
 
 interface Props {
   isFaded: boolean;
@@ -16,12 +16,12 @@ interface Props {
 export const Wheel: FC<Props> = props => {
   const { isFaded, isRunning, sectorCount, sectors, onRunningToggle, onSelect } = props;
 
+  const [rotation, setRotation] = useState(0);
   const circleRef = useRef<SVGGElement>(undefined!);
   const visibleSectors = useMemo(() => sectors.slice(0, sectorCount), [sectorCount]);
 
   const animationSpeed = 300;
   const sectorStep = 360 / sectorCount;
-  const sectorDuration = animationSpeed / sectorCount;
   const sectorPosition = -sectorStep / 2;
   const side = 300;
   const padding = 6;
@@ -44,15 +44,21 @@ export const Wheel: FC<Props> = props => {
       return;
     }
 
-    const [animation] = circleRef.current.getAnimations();
-
     if (isRunning) {
-      animation.play();
+      circleRef.current.animate([{ transform: 'rotate(0)' }, { transform: 'rotate(360deg)' }], {
+        duration: animationSpeed,
+        iterations: Infinity,
+      });
     } else {
-      if (animation.playState === 'running') {
-        animation.pause();
-        const currentTime = animation.currentTime ?? 0;
-        const sectorIndex = Math.ceil(currentTime / sectorDuration) % sectorCount;
+      const [animation] = circleRef.current.getAnimations();
+      if (animation) {
+        const circleStyle = getComputedStyle(circleRef.current, null);
+        const rotation = getRotationFromMatrixNotation(circleStyle.getPropertyValue('transform'));
+        animation.cancel();
+
+        setRotation(rotation);
+
+        const sectorIndex = Math.floor((rotation - sectorPosition) / sectorStep) % sectorCount;
         const sector = visibleSectors[sectorIndex];
         onSelect(sector);
       }
@@ -62,7 +68,7 @@ export const Wheel: FC<Props> = props => {
   return (
     <Container scale={1} isFaded={isFaded}>
       <svg viewBox={`0 0 ${side} ${side}`} xmlns="http://www.w3.org/2000/svg">
-        <Circle ref={circleRef} animationSpeed={animationSpeed}>
+        <Circle ref={circleRef} rotation={rotation}>
           <circle
             cx={center}
             cy={center}
@@ -105,12 +111,15 @@ export const Wheel: FC<Props> = props => {
                   fill="#f4f6f8"
                   opacity={0.4}
                 />
-                <image
+                <SectorImage
                   href={sector.image}
+                  cx={sectorCenter[0]}
+                  cy={sectorCenter[1]}
                   x={sectorCenter[0] - imageSize / 2}
                   y={sectorCenter[1] - imageSize / 2}
                   width={imageSize}
                   height={imageSize}
+                  rotation={rotation}
                 />
               </g>
             );
@@ -150,16 +159,6 @@ export const Wheel: FC<Props> = props => {
   );
 };
 
-const rotationAnimation = keyframes`
-  from {
-    transform: rotate(0);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-`;
-
 const Container = styled.figure<{ scale: number; isFaded: boolean }>`
   stroke: #373737;
 
@@ -169,13 +168,17 @@ const Container = styled.figure<{ scale: number; isFaded: boolean }>`
   }
 `;
 
-const Circle = styled.g<{ animationSpeed: number }>`
+const Circle = styled.g<{ rotation: number }>`
   backface-visibility: hidden;
   will-change: transform, rotate;
   transform-style: preserve-3d;
   transform-origin: center;
-  animation: ${rotationAnimation} ${props => props.animationSpeed}ms linear infinite;
-  animation-play-state: paused;
+  transform: rotate(${props => props.rotation}deg);
+`;
+
+const SectorImage = styled.image<{ cx: number; cy: number; rotation: number }>`
+  transform-origin: ${props => props.cx}px ${props => props.cy}px;
+  transform: rotate(${props => -props.rotation}deg);
 `;
 
 const Button = styled.circle`
