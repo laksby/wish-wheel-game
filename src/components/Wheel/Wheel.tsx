@@ -1,20 +1,21 @@
-import React, { FC, useCallback, useMemo, useRef, useState } from 'react';
-import useKey from 'react-use/lib/useKey';
+import React, { FC, useEffect, useMemo, useRef } from 'react';
 import styled, { keyframes } from 'styled-components';
 import wheelButton from '../../images/wheel-button.svg';
 import { getSectorCenter, getSectorPath } from './tools';
-import { SectorData } from './types';
+import { SectorData } from '../../common';
 
 interface Props {
+  isFaded: boolean;
+  isRunning: boolean;
   sectorCount: number;
   sectors: SectorData[];
+  onRunningToggle(): void;
+  onSelect(sector: SectorData): void;
 }
 
 export const Wheel: FC<Props> = props => {
-  const { sectorCount, sectors } = props;
+  const { isFaded, isRunning, sectorCount, sectors, onRunningToggle, onSelect } = props;
 
-  const [running, setRunning] = useState(false);
-  const [, setSelectedSector] = useState<SectorData>();
   const circleRef = useRef<SVGGElement>(undefined!);
   const visibleSectors = useMemo(() => sectors.slice(0, sectorCount), [sectorCount]);
 
@@ -38,33 +39,28 @@ export const Wheel: FC<Props> = props => {
   const selectorInnerDepth = side - padding - selectorWidth + strokeWidth * 2;
   const selectorOuterDepth = selectorInnerDepth + selectorWidth;
 
-  useKey(
-    event => event.code === 'Space',
-    () => runWheel(),
-  );
-
-  const runWheel = useCallback(() => {
+  useEffect(() => {
     if (!circleRef.current) {
       return;
     }
 
     const [animation] = circleRef.current.getAnimations();
 
-    if (!running) {
+    if (isRunning) {
       animation.play();
     } else {
-      animation.pause();
-      const currentTime = animation.currentTime ?? 0;
-      const sectorIndex = Math.ceil(currentTime / sectorDuration) % sectorCount;
-      const sector = visibleSectors[sectorIndex];
-      setSelectedSector(sector);
+      if (animation.playState === 'running') {
+        animation.pause();
+        const currentTime = animation.currentTime ?? 0;
+        const sectorIndex = Math.ceil(currentTime / sectorDuration) % sectorCount;
+        const sector = visibleSectors[sectorIndex];
+        onSelect(sector);
+      }
     }
-
-    setRunning(r => !r);
-  }, [running]);
+  }, [isRunning, onSelect]);
 
   return (
-    <Container scale={1}>
+    <Container scale={1} isFaded={isFaded}>
       <svg viewBox={`0 0 ${side} ${side}`} xmlns="http://www.w3.org/2000/svg">
         <Circle ref={circleRef} animationSpeed={animationSpeed}>
           <circle
@@ -138,7 +134,7 @@ export const Wheel: FC<Props> = props => {
             cy={center}
             r={centerRadius + strokeWidth / 2}
             strokeWidth={0}
-            onClick={runWheel}
+            onClick={onRunningToggle}
           />
         </Circle>
         <polygon
@@ -164,11 +160,12 @@ const rotationAnimation = keyframes`
   }
 `;
 
-const Container = styled.figure<{ scale: number }>`
+const Container = styled.figure<{ scale: number; isFaded: boolean }>`
   stroke: #373737;
 
   svg {
     width: calc(100vh * ${props => props.scale});
+    opacity: ${props => (props.isFaded ? 0.5 : 1)};
   }
 `;
 
