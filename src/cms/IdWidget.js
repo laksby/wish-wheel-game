@@ -6,8 +6,10 @@ export const IdWidget = props => {
   const uuidValue = useMemo(() => value || uniqid(), [value]);
 
   useEffect(() => {
-    onChange(uuidValue);
-  }, []);
+    if (!value) {
+      onChange(uuidValue);
+    }
+  }, [value]);
 
   return (
     <>
