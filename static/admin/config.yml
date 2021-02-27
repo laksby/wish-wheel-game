@@ -31,6 +31,16 @@ collections:
             'champagne',
             'pizza',
             'disco-ball',
+            'weight',
+            'dynamite',
+            'rocket',
+            'cannon',
+            'horse',
+            'camp',
+            'bomb',
+            'bow',
+            'extinguisher',
+            'plunger',
           ]
       - label: 'Content'
         name: 'content'
