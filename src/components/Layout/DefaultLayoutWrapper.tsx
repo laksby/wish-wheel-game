@@ -14,7 +14,7 @@ const Root = styled.div`
   bottom: 0;
   left: 0;
   overflow: hidden;
-  z-index: 100;
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
