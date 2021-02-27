@@ -1,18 +1,11 @@
-import React, { ChangeEvent, FC, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import uniqid from 'uniqid';
 
-interface Props {
-  classNameWrapper: string;
-  forID: string;
-  value: string;
-  onChange(value: string): void;
-}
-
-export const IdWidget: FC<Props> = props => {
+export const IdWidget = props => {
   const { forID, value, onChange, classNameWrapper } = props;
 
-  const handleChange = useCallback((event: ChangeEvent) => {
-    const target = event.target as HTMLInputElement;
+  const handleChange = useCallback(event => {
+    const target = event.target;
     const newValue = target.value.trim();
     onChange(newValue);
   }, []);

@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "allowJs": true,
-    "checkJs": true,
+    "allowJs": false,
+    "checkJs": false,
     "declaration": false,
     "isolatedModules": true,
     "jsx": "react",
@@ -32,6 +32,6 @@
     "resolveJsonModule": true,
     "skipLibCheck": true
   },
-  "include": ["src/**/*", "**/*.d.ts"],
+  "include": ["src/**/*.{ts,tsx}", "**/*.d.ts"],
   "exclude": ["node_modules"]
 }
