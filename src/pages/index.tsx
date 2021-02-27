@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useMemo, useState } from 'react';
+import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { GitHub, Pause, Play } from 'react-feather';
 import { RandomRoller, SectorData } from '../common';
 import { Controls, Layout, Note, Overlay, SEO, Wheel } from '../components';
@@ -20,10 +20,11 @@ const IndexPage: FC = () => {
   const [running, setRunning] = useState(false);
   const [selectedSector, setSelectedSector] = useState<SectorData>();
   const [sectorCount, setSectorCount] = useState(10);
-  const roller = useMemo(() => {
-    const newRoller = new RandomRoller<string>(records);
-    return newRoller;
-  }, [records]);
+  const roller = useMemo(() => new RandomRoller<string>(records), [records]);
+
+  useEffect(() => {
+    Reflect.set(window, '__ROLLER__', roller);
+  }, [roller]);
 
   const toggleRunning = useCallback(() => {
     setRunning(r => !r);
