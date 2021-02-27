@@ -1,13 +1,23 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { SectorData } from '../../common';
 
 interface Props {
   selectedSector?: SectorData;
+  records: Record<string, string[]>;
 }
 
 export const Overlay: FC<Props> = props => {
-  const { selectedSector } = props;
+  const { selectedSector, records } = props;
+  const [messageToShow, setMessageToShow] = useState<string>();
+
+  useEffect(() => {
+    if (selectedSector) {
+      const messages = records[selectedSector.type] || [];
+      const message = messages[0] || 'PLACEHOLDER';
+      setMessageToShow(message);
+    }
+  }, [selectedSector]);
 
   if (!selectedSector) {
     return null;
@@ -17,7 +27,7 @@ export const Overlay: FC<Props> = props => {
     <OverlayContainer>
       <OverlayBackground color={selectedSector.color} />
       <OverlayContentWrapper>
-        <OverlayContent color={selectedSector.color}>{selectedSector.type}</OverlayContent>
+        <OverlayContent color={selectedSector.color}>{messageToShow}</OverlayContent>
       </OverlayContentWrapper>
     </OverlayContainer>
   );

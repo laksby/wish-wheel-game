@@ -2,6 +2,7 @@ import React, { FC, useCallback, useState } from 'react';
 import { Pause, Play } from 'react-feather';
 import { SectorData } from '../common';
 import { Controls, Layout, Overlay, SEO, Wheel } from '../components';
+import { useRecords } from '../hooks';
 import balloonImage from '../images/sectors/001-balloon.svg';
 import discoBallImage from '../images/sectors/002-disco ball.svg';
 import cocktailImage from '../images/sectors/003-cocktail.svg';
@@ -14,6 +15,8 @@ import iceCreamImage from '../images/sectors/018-ice cream.svg';
 import hotdogImage from '../images/sectors/021-hotdog.svg';
 
 const IndexPage: FC = () => {
+  const records = useRecords();
+
   const [running, setRunning] = useState(false);
   const [selectedSector, setSelectedSector] = useState<SectorData>();
   const [sectorCount, setSectorCount] = useState(6);
@@ -80,7 +83,7 @@ const IndexPage: FC = () => {
           { text: '10', type: 'set-sectors', payload: 10, key: '0' },
         ]}
       />
-      <Overlay selectedSector={selectedSector} />
+      <Overlay selectedSector={selectedSector} records={records} />
     </Layout>
   );
 };

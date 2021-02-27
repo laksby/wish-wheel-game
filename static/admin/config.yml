@@ -9,7 +9,7 @@ collections:
   - name: 'data'
     label: 'Data'
     identifier_field: 'type'
-    folder: 'data'
+    folder: 'data/records'
     create: true
     slug: '{{type}}'
     extension: 'yml'
