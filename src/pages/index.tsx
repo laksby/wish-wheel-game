@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useState } from 'react';
-import { Pause, Play } from 'react-feather';
+import { Pause, Play, GitHub } from 'react-feather';
 import { SectorData } from '../common';
-import { Controls, Layout, Overlay, SEO, Wheel } from '../components';
+import { Controls, Layout, Note, Overlay, SEO, Wheel } from '../components';
 import { useRecords } from '../hooks';
 import balloonImage from '../images/sectors/001-balloon.svg';
 import discoBallImage from '../images/sectors/002-disco ball.svg';
@@ -69,6 +69,26 @@ const IndexPage: FC = () => {
           { color: '#EB5463', image: discoBallImage, type: 'disco-ball' },
         ]}
       />
+      <Note position="top-left">
+        <h1>Колесо Желаний</h1>
+      </Note>
+      <Note position="bottom-left">Версия: v1.0.0</Note>
+      <Note position="top-right">
+        <h2>Управление</h2>
+        <ul>
+          <li>
+            <em>[Пробел]</em> Вращать барабан; закрыть окно сектора
+          </li>
+          <li>
+            <em>[Цифры: 4, 5, 6, 7, 8, 9, 0]</em> Выбрать число секторов на барабане (0 для 10)
+          </li>
+        </ul>
+      </Note>
+      <Note position="bottom-right">
+        <a href="https://github.com/laksby/wish-wheel-game" target="_blank" rel="noreferrer">
+          <GitHub />
+        </a>
+      </Note>
       <Controls
         onClick={handleControlClick}
         controls={[

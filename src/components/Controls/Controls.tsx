@@ -22,8 +22,8 @@ export const Controls: FC<Props> = props => {
 
 const Container = styled.div`
   position: absolute;
-  top: 0;
-  bottom: 0;
+  top: 20vh;
+  bottom: 20vh;
   left: 0;
   width: 20vh;
   overflow: hidden;
