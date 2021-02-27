@@ -13,13 +13,13 @@ export const IdWidget = props => {
   return (
     <>
       <input
-        type="hidden"
         id={forID}
         className={classNameWrapper}
         value={value || uniqid()}
         onChange={handleChange}
+        readOnly
+        disabled
       />
-      <div>{value || uniqid()}</div>
     </>
   );
 };
