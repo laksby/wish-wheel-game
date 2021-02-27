@@ -68,7 +68,7 @@ const Container = styled.div<{ top: string; right: string; bottom: string; left:
 
   li {
     margin: 0;
-    padding: 0.5vh 0;
+    padding: 1vh 0;
 
     em {
       display: block;

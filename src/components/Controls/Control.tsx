@@ -22,19 +22,24 @@ export const Control: FC<Props> = props => {
   }, [control, onClick, playClick]);
 
   useKeyPressEvent(control.key, () => {
+    playClick();
     onClick(control.type, control.payload);
   });
 
   return (
-    <Button isHighlighted={control.isHighlighted} onClick={handleClick}>
+    <Button
+      isWide={control.isWide}
+      isHighlighted={control.isHighlighted}
+      isPlayback={control.isPlayback}
+      onClick={handleClick}>
       {control.text}
     </Button>
   );
 };
 
-const Button = styled.div<{ isHighlighted?: boolean }>`
+const Button = styled.div<{ isWide?: boolean; isHighlighted?: boolean; isPlayback?: boolean }>`
   box-sizing: border-box;
-  width: 8vh;
+  width: ${props => (props.isWide ? '18vh' : '8vh')};
   height: 8vh;
   font-family: sans-serif;
   font-size: 4.5vh;
@@ -53,10 +58,24 @@ const Button = styled.div<{ isHighlighted?: boolean }>`
   svg {
     width: 5vh;
     height: 5vh;
-    fill: #b3a4ee;
     stroke: #373737;
-    stroke-width: 0.1vh;
+    stroke-width: 0.2vh;
     pointer-events: none;
+
+    ${props =>
+      props.isPlayback &&
+      css`
+        stroke-width: 0.1vh;
+        fill: #b3a4ee;
+      `}
+
+    ${props =>
+      props.isWide &&
+      css`
+        & + * {
+          margin-left: 4vh;
+        }
+      `}
   }
 
   &:hover {

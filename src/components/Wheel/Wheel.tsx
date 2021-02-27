@@ -10,23 +10,15 @@ interface Props {
   isRunning: boolean;
   sectorCount: number;
   sectors: SectorData[];
-  soundRunning: string;
+  spinSound: string;
   onRunningToggle(): void;
   onSelect(sector: SectorData): void;
 }
 
 export const Wheel: FC<Props> = props => {
-  const {
-    isFaded,
-    isRunning,
-    sectorCount,
-    sectors,
-    soundRunning,
-    onRunningToggle,
-    onSelect,
-  } = props;
+  const { isFaded, isRunning, sectorCount, sectors, spinSound, onRunningToggle, onSelect } = props;
 
-  const [playRunning, { stop: stopRunning }] = useSound(soundRunning, {
+  const [playSpin, { stop: stopSpin }] = useSound(spinSound, {
     volume: 0.4,
   });
 
@@ -59,13 +51,13 @@ export const Wheel: FC<Props> = props => {
     }
 
     if (isRunning) {
-      playRunning();
+      playSpin();
       circleRef.current.animate([{ transform: 'rotate(0)' }, { transform: 'rotate(360deg)' }], {
         duration: animationSpeed,
         iterations: Infinity,
       });
     } else {
-      stopRunning();
+      stopSpin();
       const [animation] = circleRef.current.getAnimations();
       if (animation) {
         const circleStyle = getComputedStyle(circleRef.current, null);

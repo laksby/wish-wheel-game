@@ -1,5 +1,5 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { GitHub, Pause, Play } from 'react-feather';
+import { GitHub, Pause, Play, Music } from 'react-feather';
 import { RandomRoller, SectorData } from '../common';
 import { Controls, Layout, Note, Overlay, SEO, Wheel } from '../components';
 import { useRecords } from '../hooks';
@@ -19,6 +19,7 @@ const IndexPage: FC = () => {
 
   const [running, setRunning] = useState(false);
   const [selectedSector, setSelectedSector] = useState<SectorData>();
+  const [spinSound, setSpinSound] = useState('/sound/spin-1.mp3');
   const [sectorCount, setSectorCount] = useState(10);
   const roller = useMemo(() => new RandomRoller<string>(records), [records]);
 
@@ -45,11 +46,18 @@ const IndexPage: FC = () => {
           }
           break;
         case 'set-sectors':
-          setSectorCount(payload);
+          if (!running) {
+            setSectorCount(payload);
+          }
+          break;
+        case 'set-sound':
+          if (!running) {
+            setSpinSound(payload);
+          }
           break;
       }
     },
-    [selectedSector],
+    [selectedSector, running],
   );
 
   return (
@@ -61,7 +69,7 @@ const IndexPage: FC = () => {
         onRunningToggle={toggleRunning}
         onSelect={setSelectedSector}
         sectorCount={sectorCount}
-        soundRunning="/sound/spin.mp3"
+        spinSound={spinSound}
         sectors={[
           { color: '#F4F6F8', image: cakeImage, type: 'cake' },
           { color: '#F5B945', image: balloonImage, type: 'balloon' },
@@ -88,6 +96,9 @@ const IndexPage: FC = () => {
           <li>
             <em>[Цифры: 4, 5, 6, 7, 8, 9, 0]</em> Выбрать число секторов на барабане (0 для 10)
           </li>
+          <li>
+            <em>[Цифры: 1, 2, 3]</em> Выбрать звук вращения барабана
+          </li>
         </ul>
       </Note>
       <Note position="bottom-right">
@@ -103,6 +114,7 @@ const IndexPage: FC = () => {
             type: 'play',
             payload: null,
             key: event => event.code === 'Space',
+            isPlayback: true,
           },
           {
             text: '4',
@@ -152,6 +164,45 @@ const IndexPage: FC = () => {
             payload: 10,
             key: '0',
             isHighlighted: sectorCount === 10,
+          },
+          {
+            text: (
+              <>
+                <Music />
+                <span>#1</span>
+              </>
+            ),
+            type: 'set-sound',
+            payload: '/sound/spin-1.mp3',
+            key: '1',
+            isWide: true,
+            isHighlighted: spinSound === '/sound/spin-1.mp3',
+          },
+          {
+            text: (
+              <>
+                <Music />
+                <span>#2</span>
+              </>
+            ),
+            type: 'set-sound',
+            payload: '/sound/spin-2.mp3',
+            key: '2',
+            isWide: true,
+            isHighlighted: spinSound === '/sound/spin-2.mp3',
+          },
+          {
+            text: (
+              <>
+                <Music />
+                <span>#3</span>
+              </>
+            ),
+            type: 'set-sound',
+            payload: '/sound/spin-3.mp3',
+            key: '3',
+            isWide: true,
+            isHighlighted: spinSound === '/sound/spin-3.mp3',
           },
         ]}
       />
