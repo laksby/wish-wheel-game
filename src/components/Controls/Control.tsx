@@ -1,6 +1,7 @@
 import React, { FC, useCallback } from 'react';
 import useKeyPressEvent from 'react-use/lib/useKeyPressEvent';
 import styled, { css } from 'styled-components';
+import useSound from 'use-sound';
 import { ControlData } from './types';
 
 interface Props {
@@ -11,9 +12,14 @@ interface Props {
 export const Control: FC<Props> = props => {
   const { control, onClick } = props;
 
+  const [playClick] = useSound('/sound/click.mp3', {
+    volume: 0.4,
+  });
+
   const handleClick = useCallback(() => {
+    playClick();
     onClick(control.type, control.payload);
-  }, [control, onClick]);
+  }, [control, onClick, playClick]);
 
   useKeyPressEvent(control.key, () => {
     onClick(control.type, control.payload);

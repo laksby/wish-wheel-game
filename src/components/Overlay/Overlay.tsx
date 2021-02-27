@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import useSound from 'use-sound';
 import { RandomRoller, SectorData } from '../../common';
 
 interface Props {
@@ -12,12 +13,20 @@ export const Overlay: FC<Props> = props => {
   const { selectedSector, roller, onClose } = props;
   const [messageToShow, setMessageToShow] = useState<string>();
 
+  const [playHide] = useSound('/sound/hide.mp3', {
+    volume: 0.4,
+  });
+
   useEffect(() => {
     if (selectedSector) {
       const message = roller.draw(selectedSector.type) || 'Упс :(';
       setMessageToShow(message);
+    } else {
+      if (messageToShow) {
+        playHide();
+      }
     }
-  }, [selectedSector]);
+  }, [selectedSector, playHide]);
 
   if (!selectedSector) {
     return null;
