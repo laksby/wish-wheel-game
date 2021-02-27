@@ -8,21 +8,30 @@ public_folder: /img
 collections:
   - name: 'data'
     label: 'Data'
-    identifier_field: 'id'
+    identifier_field: 'type'
     folder: 'data'
     create: true
-    slug: '{{id}}'
+    slug: '{{type}}'
     extension: 'yml'
     editor:
       preview: false
     fields:
-      - label: 'ID'
-        name: 'id'
-        widget: 'id'
-      - label: 'Title'
-        name: 'title'
-        widget: 'string'
       - label: 'Type'
         name: 'type'
         widget: 'select'
-        options: ['prize', 'champagne', 'cocktail']
+        options:
+          [
+            'cake',
+            'balloon',
+            'prize',
+            'cocktail',
+            'bbq',
+            'ice-cream',
+            'hotdog',
+            'champagne',
+            'pizza',
+            'disco-ball',
+          ]
+      - label: 'Title'
+        name: 'title'
+        widget: 'string'
