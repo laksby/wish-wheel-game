@@ -61,6 +61,7 @@ const IndexPage: FC = () => {
         onRunningToggle={toggleRunning}
         onSelect={setSelectedSector}
         sectorCount={sectorCount}
+        soundRunning="/sound/spin.mp3"
         sectors={[
           { color: '#F4F6F8', image: cakeImage, type: 'cake' },
           { color: '#F5B945', image: balloonImage, type: 'balloon' },

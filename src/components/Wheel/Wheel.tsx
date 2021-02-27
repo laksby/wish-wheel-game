@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
+import useSound from 'use-sound';
 import { SectorData } from '../../common';
 import wheelButton from '../../images/wheel-button.svg';
 import { getRotationFromMatrixNotation, getSectorCenter, getSectorPath } from './tools';
@@ -9,12 +10,25 @@ interface Props {
   isRunning: boolean;
   sectorCount: number;
   sectors: SectorData[];
+  soundRunning: string;
   onRunningToggle(): void;
   onSelect(sector: SectorData): void;
 }
 
 export const Wheel: FC<Props> = props => {
-  const { isFaded, isRunning, sectorCount, sectors, onRunningToggle, onSelect } = props;
+  const {
+    isFaded,
+    isRunning,
+    sectorCount,
+    sectors,
+    soundRunning,
+    onRunningToggle,
+    onSelect,
+  } = props;
+
+  const [playRunning, { stop: stopRunning }] = useSound(soundRunning, {
+    volume: 0.4,
+  });
 
   const [rotation, setRotation] = useState(0);
   const circleRef = useRef<SVGGElement>(undefined!);
@@ -45,11 +59,13 @@ export const Wheel: FC<Props> = props => {
     }
 
     if (isRunning) {
+      playRunning();
       circleRef.current.animate([{ transform: 'rotate(0)' }, { transform: 'rotate(360deg)' }], {
         duration: animationSpeed,
         iterations: Infinity,
       });
     } else {
+      stopRunning();
       const [animation] = circleRef.current.getAnimations();
       if (animation) {
         const circleStyle = getComputedStyle(circleRef.current, null);
