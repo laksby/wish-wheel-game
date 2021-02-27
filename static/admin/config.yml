@@ -8,11 +8,11 @@ public_folder: /img
 collections:
   - name: 'data'
     label: 'Data'
-    identifier_field: id
+    identifier_field: 'id'
     folder: 'data'
     create: true
     slug: '{{id}}'
-    extension: yml
+    extension: 'yml'
     editor:
       preview: false
     fields:
