@@ -1,6 +1,6 @@
-import React, { FC, useCallback, useState } from 'react';
-import { Pause, Play, GitHub } from 'react-feather';
-import { SectorData } from '../common';
+import React, { FC, useCallback, useMemo, useState } from 'react';
+import { GitHub, Pause, Play } from 'react-feather';
+import { RandomRoller, SectorData } from '../common';
 import { Controls, Layout, Note, Overlay, SEO, Wheel } from '../components';
 import { useRecords } from '../hooks';
 import balloonImage from '../images/sectors/001-balloon.svg';
@@ -20,6 +20,11 @@ const IndexPage: FC = () => {
   const [running, setRunning] = useState(false);
   const [selectedSector, setSelectedSector] = useState<SectorData>();
   const [sectorCount, setSectorCount] = useState(10);
+  const roller = useMemo(() => {
+    const newRoller = new RandomRoller<string>(records);
+    Reflect.set(window, '__ROLLER__', newRoller);
+    return newRoller;
+  }, [records]);
 
   const toggleRunning = useCallback(() => {
     setRunning(r => !r);
@@ -149,7 +154,7 @@ const IndexPage: FC = () => {
           },
         ]}
       />
-      <Overlay selectedSector={selectedSector} records={records} onClose={clearSector} />
+      <Overlay selectedSector={selectedSector} roller={roller} onClose={clearSector} />
     </Layout>
   );
 };

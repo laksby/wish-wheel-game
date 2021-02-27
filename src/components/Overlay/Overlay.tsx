@@ -1,21 +1,20 @@
 import React, { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { SectorData } from '../../common';
+import { RandomRoller, SectorData } from '../../common';
 
 interface Props {
   selectedSector?: SectorData;
-  records: Record<string, string[]>;
+  roller: RandomRoller<string>;
   onClose(): void;
 }
 
 export const Overlay: FC<Props> = props => {
-  const { selectedSector, records, onClose } = props;
+  const { selectedSector, roller, onClose } = props;
   const [messageToShow, setMessageToShow] = useState<string>();
 
   useEffect(() => {
     if (selectedSector) {
-      const messages = records[selectedSector.type] || [];
-      const message = messages[0] || 'PLACEHOLDER';
+      const message = roller.draw(selectedSector.type) || 'Упс :(';
       setMessageToShow(message);
     }
   }, [selectedSector]);
