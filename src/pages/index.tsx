@@ -19,10 +19,14 @@ const IndexPage: FC = () => {
 
   const [running, setRunning] = useState(false);
   const [selectedSector, setSelectedSector] = useState<SectorData>();
-  const [sectorCount, setSectorCount] = useState(6);
+  const [sectorCount, setSectorCount] = useState(10);
 
   const toggleRunning = useCallback(() => {
     setRunning(r => !r);
+  }, []);
+
+  const clearSector = useCallback(() => {
+    setSelectedSector(undefined);
   }, []);
 
   const handleControlClick = useCallback(
@@ -32,7 +36,7 @@ const IndexPage: FC = () => {
           if (!selectedSector) {
             toggleRunning();
           } else {
-            setSelectedSector(undefined);
+            clearSector();
           }
           break;
         case 'set-sectors':
@@ -74,16 +78,58 @@ const IndexPage: FC = () => {
             payload: null,
             key: event => event.code === 'Space',
           },
-          { text: '4', type: 'set-sectors', payload: 4, key: '4' },
-          { text: '5', type: 'set-sectors', payload: 5, key: '5' },
-          { text: '6', type: 'set-sectors', payload: 6, key: '6' },
-          { text: '7', type: 'set-sectors', payload: 7, key: '7' },
-          { text: '8', type: 'set-sectors', payload: 8, key: '8' },
-          { text: '9', type: 'set-sectors', payload: 9, key: '9' },
-          { text: '10', type: 'set-sectors', payload: 10, key: '0' },
+          {
+            text: '4',
+            type: 'set-sectors',
+            payload: 4,
+            key: '4',
+            isHighlighted: sectorCount === 4,
+          },
+          {
+            text: '5',
+            type: 'set-sectors',
+            payload: 5,
+            key: '5',
+            isHighlighted: sectorCount === 5,
+          },
+          {
+            text: '6',
+            type: 'set-sectors',
+            payload: 6,
+            key: '6',
+            isHighlighted: sectorCount === 6,
+          },
+          {
+            text: '7',
+            type: 'set-sectors',
+            payload: 7,
+            key: '7',
+            isHighlighted: sectorCount === 7,
+          },
+          {
+            text: '8',
+            type: 'set-sectors',
+            payload: 8,
+            key: '8',
+            isHighlighted: sectorCount === 8,
+          },
+          {
+            text: '9',
+            type: 'set-sectors',
+            payload: 9,
+            key: '9',
+            isHighlighted: sectorCount === 9,
+          },
+          {
+            text: '10',
+            type: 'set-sectors',
+            payload: 10,
+            key: '0',
+            isHighlighted: sectorCount === 10,
+          },
         ]}
       />
-      <Overlay selectedSector={selectedSector} records={records} />
+      <Overlay selectedSector={selectedSector} records={records} onClose={clearSector} />
     </Layout>
   );
 };

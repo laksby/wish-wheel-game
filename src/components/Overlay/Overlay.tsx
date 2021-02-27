@@ -5,10 +5,11 @@ import { SectorData } from '../../common';
 interface Props {
   selectedSector?: SectorData;
   records: Record<string, string[]>;
+  onClose(): void;
 }
 
 export const Overlay: FC<Props> = props => {
-  const { selectedSector, records } = props;
+  const { selectedSector, records, onClose } = props;
   const [messageToShow, setMessageToShow] = useState<string>();
 
   useEffect(() => {
@@ -27,7 +28,13 @@ export const Overlay: FC<Props> = props => {
     <OverlayContainer>
       <OverlayBackground color={selectedSector.color} />
       <OverlayContentWrapper>
-        <OverlayContent color={selectedSector.color}>{messageToShow}</OverlayContent>
+        <OverlayContent color={selectedSector.color}>
+          <SectorImage src={selectedSector.image} alt="Sector image" aria-hidden />
+          <MessageText>{messageToShow}</MessageText>
+          <CloseButton onClick={onClose} color={selectedSector.color}>
+            Продолжить
+          </CloseButton>
+        </OverlayContent>
       </OverlayContentWrapper>
     </OverlayContainer>
   );
@@ -66,16 +73,51 @@ const OverlayContentWrapper = styled.div`
 `;
 
 const OverlayContent = styled.div<{ color: string }>`
+  box-sizing: border-box;
+  padding: 4vh;
   background-color: ${props => props.color};
   border-radius: 50%;
   width: 75vh;
   height: 75vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   border: 0.5vh solid #373737;
   font-family: sans-serif;
   font-size: 4.5vh;
   box-shadow: rgb(0 0 0 / 20%) 0px 3px 3px -2px, rgb(0 0 0 / 14%) 0px 3px 4px 0px,
     rgb(0 0 0 / 12%) 0px 1px 8px 0px;
+`;
+
+const SectorImage = styled.img`
+  width: 16vh;
+  height: 16vh;
+`;
+
+const MessageText = styled.div`
+  color: #373737;
+`;
+
+const CloseButton = styled.div<{ color: string }>`
+  padding: 1vh 2vh;
+  background-color: #f4f6f8aa;
+  border: 0.25vh solid #373737;
+  font-family: sans-serif;
+  color: #373737;
+  font-size: 2vh;
+  border-radius: 1vh;
+  text-transform: uppercase;
+  margin: 1vh;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  transition: background-color 300ms;
+  margin-top: 10vh;
+
+  &:hover {
+    background-color: #f4f6f8;
+  }
 `;

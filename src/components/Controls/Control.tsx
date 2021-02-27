@@ -1,6 +1,6 @@
 import React, { FC, useCallback } from 'react';
 import useKeyPressEvent from 'react-use/lib/useKeyPressEvent';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { ControlData } from './types';
 
 interface Props {
@@ -19,10 +19,14 @@ export const Control: FC<Props> = props => {
     onClick(control.type, control.payload);
   });
 
-  return <Button onClick={handleClick}>{control.text}</Button>;
+  return (
+    <Button isHighlighted={control.isHighlighted} onClick={handleClick}>
+      {control.text}
+    </Button>
+  );
 };
 
-const Button = styled.div`
+const Button = styled.div<{ isHighlighted?: boolean }>`
   box-sizing: border-box;
   width: 8vh;
   height: 8vh;
@@ -52,4 +56,10 @@ const Button = styled.div`
   &:hover {
     background-color: #f5b945;
   }
+
+  ${props =>
+    props.isHighlighted &&
+    css`
+      background-color: #f5b945;
+    `}
 `;
