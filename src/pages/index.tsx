@@ -22,7 +22,6 @@ const IndexPage: FC = () => {
   const [sectorCount, setSectorCount] = useState(10);
   const roller = useMemo(() => {
     const newRoller = new RandomRoller<string>(records);
-    Reflect.set(window, '__ROLLER__', newRoller);
     return newRoller;
   }, [records]);
 
