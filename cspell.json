@@ -2,5 +2,6 @@
   "version": "0.1",
   "language": "en,ru",
   "import": ["node_modules/cspell-dict-ru_ru/cspell-ext.json"],
+  "ignorePaths": ["data"],
   "words": ["uniqid"]
 }

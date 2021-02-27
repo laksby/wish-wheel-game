@@ -1,15 +1,9 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import uniqid from 'uniqid';
 
 export const IdWidget = props => {
-  const { forID, onChange, classNameWrapper } = props;
-  const uuidValue = useMemo(() => uniqid(), []);
-
-  const handleChange = useCallback(event => {
-    const target = event.target;
-    const newValue = target.value.trim();
-    onChange(newValue);
-  }, []);
+  const { forID, value, onChange, classNameWrapper } = props;
+  const uuidValue = useMemo(() => value || uniqid(), [value]);
 
   useEffect(() => {
     onChange(uuidValue);
@@ -18,10 +12,10 @@ export const IdWidget = props => {
   return (
     <>
       <input
+        type="text"
         id={forID}
         className={classNameWrapper}
-        value={uuidValue}
-        onChange={handleChange}
+        defaultValue={uuidValue}
         readOnly
         disabled
       />
