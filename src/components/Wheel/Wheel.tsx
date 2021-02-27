@@ -1,22 +1,21 @@
 import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
 import styled from 'styled-components';
 import useSound from 'use-sound';
-import { SectorData } from '../../common';
-import wheelButton from '../../images/wheel-button.svg';
+import { ModeData, SectorData } from '../../common';
 import { getRotationFromMatrixNotation, getSectorCenter, getSectorPath } from './tools';
 
 interface Props {
   isFaded: boolean;
   isRunning: boolean;
   sectorCount: number;
-  sectors: SectorData[];
+  mode: ModeData;
   spinSound: string;
   onRunningToggle(): void;
   onSelect(sector: SectorData): void;
 }
 
 export const Wheel: FC<Props> = props => {
-  const { isFaded, isRunning, sectorCount, sectors, spinSound, onRunningToggle, onSelect } = props;
+  const { isFaded, isRunning, sectorCount, mode, spinSound, onRunningToggle, onSelect } = props;
 
   const [playSpin, { stop: stopSpin }] = useSound(spinSound, {
     volume: 0.4,
@@ -24,7 +23,7 @@ export const Wheel: FC<Props> = props => {
 
   const [rotation, setRotation] = useState(0);
   const circleRef = useRef<SVGGElement>(undefined!);
-  const visibleSectors = useMemo(() => sectors.slice(0, sectorCount), [sectorCount]);
+  const visibleSectors = useMemo(() => mode.sectors.slice(0, sectorCount), [mode, sectorCount]);
 
   const animationSpeed = 300;
   const sectorStep = 360 / sectorCount;
@@ -81,7 +80,7 @@ export const Wheel: FC<Props> = props => {
             cx={center}
             cy={center}
             r={outerRadius}
-            fill="#B3A4EE"
+            fill={mode.frameColor}
             strokeWidth={strokeWidth}
           />
           <circle
@@ -140,7 +139,7 @@ export const Wheel: FC<Props> = props => {
             strokeWidth={strokeWidth}
           />
           <image
-            href={wheelButton}
+            href={mode.centerButtonImage}
             x={center - centerImageSize / 2 + strokeWidth}
             y={center - centerImageSize / 2 + strokeWidth}
             width={centerImageSize - strokeWidth * 2}

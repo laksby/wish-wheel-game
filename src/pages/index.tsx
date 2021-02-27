@@ -1,18 +1,8 @@
 import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { GitHub, Pause, Play, Music } from 'react-feather';
-import { RandomRoller, SectorData } from '../common';
+import { GitHub, Music, Pause, Play, Sun, Zap } from 'react-feather';
+import { ModeType, RandomRoller, SectorData } from '../common';
 import { Controls, Layout, Note, Overlay, SEO, Wheel } from '../components';
-import { useRecords } from '../hooks';
-import balloonImage from '../images/sectors/001-balloon.svg';
-import discoBallImage from '../images/sectors/002-disco ball.svg';
-import cocktailImage from '../images/sectors/003-cocktail.svg';
-import prizeImage from '../images/sectors/008-prize.svg';
-import champagneImage from '../images/sectors/009-champagne.svg';
-import pizzaImage from '../images/sectors/012-pizza.svg';
-import cakeImage from '../images/sectors/013-cake.svg';
-import bbqImage from '../images/sectors/016-bbq.svg';
-import iceCreamImage from '../images/sectors/018-ice cream.svg';
-import hotdogImage from '../images/sectors/021-hotdog.svg';
+import { useMode, useRecords } from '../hooks';
 
 const IndexPage: FC = () => {
   const records = useRecords();
@@ -21,7 +11,10 @@ const IndexPage: FC = () => {
   const [selectedSector, setSelectedSector] = useState<SectorData>();
   const [spinSound, setSpinSound] = useState('/sound/spin-1.mp3');
   const [sectorCount, setSectorCount] = useState(10);
+  const [modeType, setModeType] = useState<ModeType>('light');
   const roller = useMemo(() => new RandomRoller<string>(records), [records]);
+
+  const mode = useMode(modeType);
 
   useEffect(() => {
     Reflect.set(window, '__ROLLER__', roller);
@@ -55,6 +48,11 @@ const IndexPage: FC = () => {
             setSpinSound(payload);
           }
           break;
+        case 'set-mode':
+          if (!running) {
+            setModeType(payload);
+          }
+          break;
       }
     },
     [selectedSector, running],
@@ -70,18 +68,7 @@ const IndexPage: FC = () => {
         onSelect={setSelectedSector}
         sectorCount={sectorCount}
         spinSound={spinSound}
-        sectors={[
-          { color: '#F4F6F8', image: cakeImage, type: 'cake' },
-          { color: '#F5B945', image: balloonImage, type: 'balloon' },
-          { color: '#F36A50', image: prizeImage, type: 'prize' },
-          { color: '#EB86BE', image: cocktailImage, type: 'cocktail' },
-          { color: '#5E9CEA', image: bbqImage, type: 'bbq' },
-          { color: '#65D4F1', image: iceCreamImage, type: 'ice-cream' },
-          { color: '#74B0F3', image: hotdogImage, type: 'hotdog' },
-          { color: '#9579DA', image: champagneImage, type: 'champagne' },
-          { color: '#FFD67B', image: pizzaImage, type: 'pizza' },
-          { color: '#EB5463', image: discoBallImage, type: 'disco-ball' },
-        ]}
+        mode={mode}
       />
       <Note position="top-left">
         <h1>Колесо Желаний</h1>
@@ -99,6 +86,12 @@ const IndexPage: FC = () => {
           <li>
             <em>[Цифры: 1, 2, 3]</em> Выбрать звук вращения барабана
           </li>
+          <li>
+            <em>[Буква: q]</em> Выбрать жесткий режим игры
+          </li>
+          <li>
+            <em>[Буква: w]</em> Выбрать легкий режим игры
+          </li>
         </ul>
       </Note>
       <Note position="bottom-right">
@@ -114,7 +107,7 @@ const IndexPage: FC = () => {
             type: 'play',
             payload: null,
             key: event => event.code === 'Space',
-            isPlayback: true,
+            color: '#b3a4ee',
           },
           {
             text: '4',
@@ -203,6 +196,22 @@ const IndexPage: FC = () => {
             key: '3',
             isWide: true,
             isHighlighted: spinSound === '/sound/spin-3.mp3',
+          },
+          {
+            text: <Zap />,
+            type: 'set-mode',
+            payload: 'hard',
+            key: 'q',
+            color: '#EB5463',
+            isHighlighted: modeType === 'hard',
+          },
+          {
+            text: <Sun />,
+            type: 'set-mode',
+            payload: 'light',
+            key: 'w',
+            color: '#FFD67B',
+            isHighlighted: modeType === 'light',
           },
         ]}
       />

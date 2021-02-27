@@ -8,5 +8,5 @@ export interface ControlData {
   key?: string | KeyFilter;
   isHighlighted?: boolean;
   isWide?: boolean;
-  isPlayback?: boolean;
+  color?: string;
 }

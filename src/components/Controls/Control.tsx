@@ -30,14 +30,14 @@ export const Control: FC<Props> = props => {
     <Button
       isWide={control.isWide}
       isHighlighted={control.isHighlighted}
-      isPlayback={control.isPlayback}
+      color={control.color}
       onClick={handleClick}>
       {control.text}
     </Button>
   );
 };
 
-const Button = styled.div<{ isWide?: boolean; isHighlighted?: boolean; isPlayback?: boolean }>`
+const Button = styled.div<{ isWide?: boolean; isHighlighted?: boolean; color?: string }>`
   box-sizing: border-box;
   width: ${props => (props.isWide ? '18vh' : '8vh')};
   height: 8vh;
@@ -63,10 +63,10 @@ const Button = styled.div<{ isWide?: boolean; isHighlighted?: boolean; isPlaybac
     pointer-events: none;
 
     ${props =>
-      props.isPlayback &&
+      props.color &&
       css`
         stroke-width: 0.1vh;
-        fill: #b3a4ee;
+        fill: ${props.color};
       `}
 
     ${props =>
