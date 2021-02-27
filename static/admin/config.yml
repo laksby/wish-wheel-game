@@ -32,6 +32,7 @@ collections:
             'pizza',
             'disco-ball',
           ]
-      - label: 'Title'
-        name: 'title'
-        widget: 'string'
+      - label: 'Content'
+        name: 'content'
+        widget: 'text'
+        hint: 'Message blocks should be separated with "---"'
