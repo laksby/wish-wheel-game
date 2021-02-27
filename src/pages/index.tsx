@@ -74,7 +74,7 @@ const IndexPage: FC = () => {
       </Note>
       <Note position="bottom-left">Версия: v1.0.0</Note>
       <Note position="top-right">
-        <h2>Управление</h2>
+        <h2>Горячие Клавиши</h2>
         <ul>
           <li>
             <em>[Пробел]</em> Вращать барабан; закрыть окно сектора
