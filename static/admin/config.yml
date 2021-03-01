@@ -10,7 +10,7 @@ collections:
     label: 'Data'
     identifier_field: 'type'
     folder: 'data/records'
-    create: true
+    create: false
     slug: '{{type}}'
     extension: 'yml'
     editor:
@@ -18,30 +18,7 @@ collections:
     fields:
       - label: 'Type'
         name: 'type'
-        widget: 'select'
-        options:
-          [
-            'cake',
-            'balloon',
-            'prize',
-            'cocktail',
-            'bbq',
-            'ice-cream',
-            'hotdog',
-            'champagne',
-            'pizza',
-            'disco-ball',
-            'weight',
-            'dynamite',
-            'rocket',
-            'cannon',
-            'horse',
-            'camp',
-            'bomb',
-            'bow',
-            'extinguisher',
-            'plunger',
-          ]
+        widget: 'string'
       - label: 'Content'
         name: 'content'
         widget: 'text'
