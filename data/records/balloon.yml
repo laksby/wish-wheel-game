@@ -1,2 +1,7 @@
 type: balloon
-content: Шарики в студию
+content: |-
+  Шарики в студию
+  ---
+  lorem ipsum
+  ---
+  lorem ipsum #2
