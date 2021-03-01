@@ -71,7 +71,7 @@ const IndexPage: FC = () => {
         mode={mode}
       />
       <Note position="top-left">
-        <h1>Колесо Желаний</h1>
+        <h1>Колесо Фортуны</h1>
       </Note>
       <Note position="bottom-left">Версия: v1.0.0</Note>
       <Note position="top-right">

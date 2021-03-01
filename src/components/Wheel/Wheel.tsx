@@ -35,13 +35,13 @@ export const Wheel: FC<Props> = props => {
   const outerRadius = side / 2 - strokeWidth - padding;
   const outerRingWidth = 3;
   const innerRadius = outerRadius - outerRingWidth;
+  const shadeCircleRadius = innerRadius * 0.95;
   const centerRadius = 30;
   const centerImageSize = centerRadius * 2 + strokeWidth;
-  const imageSize = Math.min(((side / 8) * 6) / sectorCount, side / 8);
-  const imageCircleRadius = imageSize * 1.1;
+  const imageSize = Math.min(((side / 8) * 7) / sectorCount, side / 8);
   const selectorHeight = 20;
-  const selectorWidth = 20;
-  const selectorInnerDepth = side - padding - selectorWidth + strokeWidth * 2;
+  const selectorWidth = 16;
+  const selectorInnerDepth = side - padding - selectorWidth + strokeWidth * 4;
   const selectorOuterDepth = selectorInnerDepth + selectorWidth;
 
   useEffect(() => {
@@ -94,7 +94,7 @@ export const Wheel: FC<Props> = props => {
             const sectorCenter = getSectorCenter(
               center,
               center,
-              innerRadius + centerRadius,
+              outerRadius * 2 - imageSize * 3,
               sectorPosition + sectorStep / 2 + index * sectorStep,
             );
             return (
@@ -110,14 +110,6 @@ export const Wheel: FC<Props> = props => {
                   fill={sector.color}
                   strokeWidth={strokeWidth}
                 />
-                <circle
-                  cx={sectorCenter[0]}
-                  cy={sectorCenter[1]}
-                  r={imageCircleRadius}
-                  strokeWidth={strokeWidth}
-                  fill="#f4f6f8"
-                  opacity={0.4}
-                />
                 <SectorImage
                   href={sector.image}
                   cx={sectorCenter[0]}
@@ -131,6 +123,14 @@ export const Wheel: FC<Props> = props => {
               </g>
             );
           })}
+          <circle
+            cx={center}
+            cy={center}
+            r={shadeCircleRadius}
+            strokeWidth={0}
+            fill="#f4f6f8"
+            opacity={0.25}
+          />
           <circle
             cx={center}
             cy={center}

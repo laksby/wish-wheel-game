@@ -11,16 +11,12 @@ import hmCampImage from '../images/hard-mode/sectors/057-camp.svg';
 import hmBowImage from '../images/hard-mode/sectors/060-bow.svg';
 import hmBombImage from '../images/hard-mode/sectors/062-bomb.svg';
 import hmWheelButton from '../images/hard-mode/wheel-button.svg';
-import lmBalloonImage from '../images/light-mode/sectors/001-balloon.svg';
-import lmDiscoBallImage from '../images/light-mode/sectors/002-disco ball.svg';
-import lmCocktailImage from '../images/light-mode/sectors/003-cocktail.svg';
-import lmPrizeImage from '../images/light-mode/sectors/008-prize.svg';
-import lmChampagneImage from '../images/light-mode/sectors/009-champagne.svg';
-import lmPizzaImage from '../images/light-mode/sectors/012-pizza.svg';
-import lmCakeImage from '../images/light-mode/sectors/013-cake.svg';
-import lmBbqImage from '../images/light-mode/sectors/016-bbq.svg';
-import lmIceCreamImage from '../images/light-mode/sectors/018-ice cream.svg';
-import lmHotdogImage from '../images/light-mode/sectors/021-hotdog.svg';
+import lmFoodImage from '../images/light-mode/sectors/candy.svg';
+import lmTaskImage from '../images/light-mode/sectors/cards.svg';
+import lmPrizeImage from '../images/light-mode/sectors/confetti.svg';
+import lmDrinkImage from '../images/light-mode/sectors/drink.svg';
+import lmManImage from '../images/light-mode/sectors/magician.svg';
+import lmLuckImage from '../images/light-mode/sectors/reward.svg';
 import lmWheelButton from '../images/light-mode/wheel-button.svg';
 
 export function useMode(modeType: ModeType): ModeData {
@@ -31,16 +27,16 @@ export function useMode(modeType: ModeType): ModeData {
           centerButtonImage: lmWheelButton,
           frameColor: '#B3A4EE',
           sectors: [
-            { color: '#F4F6F8', image: lmCakeImage, type: 'cake' },
-            { color: '#F5B945', image: lmBalloonImage, type: 'balloon' },
-            { color: '#F36A50', image: lmPrizeImage, type: 'prize' },
-            { color: '#EB86BE', image: lmCocktailImage, type: 'cocktail' },
-            { color: '#5E9CEA', image: lmBbqImage, type: 'bbq' },
-            { color: '#65D4F1', image: lmIceCreamImage, type: 'ice-cream' },
-            { color: '#74B0F3', image: lmHotdogImage, type: 'hotdog' },
-            { color: '#9579DA', image: lmChampagneImage, type: 'champagne' },
-            { color: '#FFD67B', image: lmPizzaImage, type: 'pizza' },
-            { color: '#EB5463', image: lmDiscoBallImage, type: 'disco-ball' },
+            { color: '#F4F6F8', image: lmTaskImage, type: 'girl-task' },
+            { color: '#FFD67B', image: lmDrinkImage, type: 'girl-drink' },
+            { color: '#F4F6F8', image: lmTaskImage, type: 'girl-task' },
+            { color: '#EB5463', image: lmLuckImage, type: 'girl-luck' },
+            { color: '#F4F6F8', image: lmTaskImage, type: 'girl-task' },
+            { color: '#EB86BE', image: lmFoodImage, type: 'girl-food' },
+            { color: '#F4F6F8', image: lmTaskImage, type: 'girl-task' },
+            { color: '#9579DA', image: lmPrizeImage, type: 'girl-prize' },
+            { color: '#F4F6F8', image: lmTaskImage, type: 'girl-task' },
+            { color: '#5E9CEA', image: lmManImage, type: 'girl-man' },
           ],
         };
       case 'hard':
