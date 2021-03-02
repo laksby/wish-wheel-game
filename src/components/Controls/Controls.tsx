@@ -25,7 +25,7 @@ const Container = styled.div`
   top: 20vh;
   bottom: 20vh;
   left: 0;
-  width: 20vh;
+  width: 10vh;
   z-index: 20;
   display: flex;
   flex-direction: row;

@@ -7,6 +7,5 @@ export interface ControlData {
   payload: any;
   key?: string | KeyFilter;
   isHighlighted?: boolean;
-  isWide?: boolean;
   color?: string;
 }

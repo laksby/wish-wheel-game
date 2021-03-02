@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useMemo, useRef, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import useSound from 'use-sound';
 import { ModeData, SectorData } from '../../common';
@@ -7,7 +7,6 @@ import { getRotationFromMatrixNotation, getSectorCenter, getSectorPath } from '.
 interface Props {
   isFaded: boolean;
   isRunning: boolean;
-  sectorCount: number;
   mode: ModeData;
   spinSound: string;
   onRunningToggle(): void;
@@ -15,15 +14,12 @@ interface Props {
 }
 
 export const Wheel: FC<Props> = props => {
-  const { isFaded, isRunning, sectorCount, mode, spinSound, onRunningToggle, onSelect } = props;
+  const { isFaded, isRunning, mode, spinSound, onRunningToggle, onSelect } = props;
+  const sectorCount = mode.sectors.length;
 
-  const [playSpin, { stop: stopSpin }] = useSound(spinSound, {
-    volume: 0.4,
-  });
-
+  const [playSpin, { stop: stopSpin }] = useSound(spinSound, { volume: 0.4 });
   const [rotation, setRotation] = useState(0);
   const circleRef = useRef<SVGGElement>(undefined!);
-  const visibleSectors = useMemo(() => mode.sectors.slice(0, sectorCount), [mode, sectorCount]);
 
   const animationSpeed = 300;
   const sectorStep = 360 / sectorCount;
@@ -66,7 +62,7 @@ export const Wheel: FC<Props> = props => {
         setRotation(rotation);
 
         const sectorIndex = Math.floor((rotation - sectorPosition) / sectorStep) % sectorCount;
-        const sector = visibleSectors[sectorIndex];
+        const sector = mode.sectors[sectorIndex];
         onSelect(sector);
       }
     }
@@ -90,7 +86,7 @@ export const Wheel: FC<Props> = props => {
             fill="#F4F6F8"
             strokeWidth={strokeWidth}
           />
-          {visibleSectors.map((sector, index) => {
+          {mode.sectors.map((sector, index) => {
             const sectorCenter = getSectorCenter(
               center,
               center,

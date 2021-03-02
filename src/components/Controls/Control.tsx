@@ -27,40 +27,39 @@ export const Control: FC<Props> = props => {
   });
 
   return (
-    <Button
-      isWide={control.isWide}
-      isHighlighted={control.isHighlighted}
-      color={control.color}
-      onClick={handleClick}>
+    <Button isHighlighted={control.isHighlighted} color={control.color} onClick={handleClick}>
       {control.text}
     </Button>
   );
 };
 
-const Button = styled.div<{ isWide?: boolean; isHighlighted?: boolean; color?: string }>`
+const Button = styled.div<{ isHighlighted?: boolean; color?: string }>`
   box-sizing: border-box;
-  width: ${props => (props.isWide ? '18vh' : '8vh')};
+  width: 8vh;
   height: 8vh;
   font-family: sans-serif;
   font-size: 4.5vh;
-  border-radius: 1vh;
-  border: 0.25vh solid #373737;
+  border-radius: 50%;
+  border: 0.5vh solid transparent;
   color: #373737;
-  background-color: #f4f6f8;
-  margin: 1vh;
+  background-color: transparent;
+  margin: 0.5vh;
   cursor: pointer;
-  transition: background-color 300ms;
   display: flex;
   align-items: center;
   justify-content: center;
   user-select: none;
 
+  img,
   svg {
-    width: 5vh;
-    height: 5vh;
+    width: 7vh;
+    height: 7vh;
+    pointer-events: none;
+  }
+
+  svg {
     stroke: #373737;
     stroke-width: 0.2vh;
-    pointer-events: none;
 
     ${props =>
       props.color &&
@@ -68,23 +67,22 @@ const Button = styled.div<{ isWide?: boolean; isHighlighted?: boolean; color?: s
         stroke-width: 0.1vh;
         fill: ${props.color};
       `}
-
-    ${props =>
-      props.isWide &&
-      css`
-        & + * {
-          margin-left: 4vh;
-        }
-      `}
   }
 
   &:hover {
-    background-color: #f5b945;
+    background-color: #f4f6f8;
+    border-color: #ffd67b;
   }
 
   ${props =>
     props.isHighlighted &&
     css`
-      background-color: #f5b945;
+      background-color: #ffd67b;
+      border-color: #ffd67b;
+
+      &:hover {
+        background-color: #ffd67b;
+        border-color: #ffd67b;
+      }
     `}
 `;
