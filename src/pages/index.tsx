@@ -1,8 +1,8 @@
-import React, { FC, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { GitHub } from 'react-feather';
-import { ModeType, RandomRoller, SectorData } from '../common';
+import { ModeType, SectorData } from '../common';
 import { Controls, Layout, Note, Overlay, SEO, Wheel } from '../components';
-import { useMode, useRecords } from '../hooks';
+import { useMode, useRecords, useRoller } from '../hooks';
 import boyImage from '../images/boy.svg';
 import musicImage from '../images/compact-disc.svg';
 import girlImage from '../images/girl.svg';
@@ -11,6 +11,7 @@ import playImage from '../images/play-button.svg';
 
 const IndexPage: FC = () => {
   const records = useRecords();
+  const roller = useRoller(records);
   const tracks = ['/sound/spin-1.mp3', '/sound/spin-2.mp3', '/sound/spin-3.mp3'];
 
   const [slideIndex, setSlideIndex] = useState(0);
@@ -18,7 +19,6 @@ const IndexPage: FC = () => {
   const [selectedSector, setSelectedSector] = useState<SectorData>();
   const [trackIndex, setTrackIndex] = useState(0);
   const [modeType, setModeType] = useState<ModeType>('light');
-  const roller = useMemo(() => new RandomRoller<string>(records), [records]);
 
   const mode = useMode(modeType);
 

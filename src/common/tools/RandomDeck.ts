@@ -2,25 +2,52 @@ export class RandomDeck<T> {
   public readonly name: string;
   private readonly variants: T[];
   private cards: T[] = [];
+  private storageName?: string;
 
-  constructor(name: string, variants: T[]) {
+  constructor(name: string, variants: T[], storageName?: string) {
     this.name = name;
     this.variants = variants;
-    this.refill();
+    this.storageName = storageName;
+    this.tryLoadFromStorage();
+    this.tryRefill();
   }
 
   public draw(): T | undefined {
     const card = this.cards.pop();
 
-    if (!this.cards.length) {
-      this.refill();
-    }
+    this.tryRefill();
+    this.trySaveToStorage();
 
     return card;
   }
 
-  public getRemainingCards(): T[] {
-    return [...this.cards];
+  private tryRefill(): void {
+    if (!this.cards.length) {
+      this.refill();
+      this.trySaveToStorage();
+    }
+  }
+
+  private tryLoadFromStorage(): void {
+    if (!this.storageName) {
+      return;
+    }
+
+    const storedContent = sessionStorage.getItem(this.getStorageKey());
+    this.cards = JSON.parse(storedContent || '[]');
+  }
+
+  private trySaveToStorage(): void {
+    if (!this.storageName) {
+      return;
+    }
+
+    const storedContent = JSON.stringify(this.cards, null, 2);
+    sessionStorage.setItem(this.getStorageKey(), storedContent);
+  }
+
+  private getStorageKey(): string {
+    return `${this.storageName}.${this.name}`;
   }
 
   private refill(): void {

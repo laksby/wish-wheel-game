@@ -1,13 +1,18 @@
 import { RandomDeck } from './RandomDeck';
 
+interface Options<T> {
+  records: Record<string, T[]>;
+  storageName?: string;
+}
+
 export class RandomRoller<T> {
   private readonly decks: Map<string, RandomDeck<T>>;
 
-  constructor(sourceData: Record<string, T[]>) {
+  constructor(options: Options<T>) {
     this.decks = new Map(
-      Object.entries(sourceData).map(([deckName, variants]) => [
+      Object.entries(options.records).map(([deckName, variants]) => [
         deckName,
-        new RandomDeck(deckName, variants),
+        new RandomDeck(deckName, variants, options.storageName),
       ]),
     );
   }
@@ -21,11 +26,5 @@ export class RandomRoller<T> {
 
     const card = deck.draw();
     return card;
-  }
-
-  public dumpState(): string[] {
-    return Array.from(this.decks.values()).map(
-      deck => `${deck.name}: ${deck.getRemainingCards().join('; ')}`,
-    );
   }
 }
