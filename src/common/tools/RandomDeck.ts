@@ -29,21 +29,21 @@ export class RandomDeck<T> {
   }
 
   private tryLoadFromStorage(): void {
-    if (!this.storageName || !sessionStorage) {
+    if (!this.storageName || !window.sessionStorage) {
       return;
     }
 
-    const storedContent = sessionStorage.getItem(this.getStorageKey());
+    const storedContent = window.sessionStorage.getItem(this.getStorageKey());
     this.cards = JSON.parse(storedContent || '[]');
   }
 
   private trySaveToStorage(): void {
-    if (!this.storageName || !sessionStorage) {
+    if (!this.storageName || !window.sessionStorage) {
       return;
     }
 
     const storedContent = JSON.stringify(this.cards, null, 2);
-    sessionStorage.setItem(this.getStorageKey(), storedContent);
+    window.sessionStorage.setItem(this.getStorageKey(), storedContent);
   }
 
   private getStorageKey(): string {
