@@ -1,6 +1,6 @@
 import React, { FC, useCallback } from 'react';
 import useKeyPressEvent from 'react-use/lib/useKeyPressEvent';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import useSound from 'use-sound';
 import { ControlData } from './types';
 
@@ -26,21 +26,17 @@ export const Control: FC<Props> = props => {
     onClick(control.type, control.payload);
   });
 
-  return (
-    <Button isHighlighted={control.isHighlighted} color={control.color} onClick={handleClick}>
-      {control.text}
-    </Button>
-  );
+  return <Button onClick={handleClick}>{control.text}</Button>;
 };
 
-const Button = styled.div<{ isHighlighted?: boolean; color?: string }>`
+const Button = styled.div`
   box-sizing: border-box;
   width: 8vh;
   height: 8vh;
   font-family: sans-serif;
   font-size: 4.5vh;
   border-radius: 50%;
-  border: 0.5vh solid transparent;
+  border: 4px solid transparent;
   color: #373737;
   background-color: transparent;
   margin: 0.5vh;
@@ -49,40 +45,22 @@ const Button = styled.div<{ isHighlighted?: boolean; color?: string }>`
   align-items: center;
   justify-content: center;
   user-select: none;
+  transition: box-shadow 300ms;
 
   img,
   svg {
-    width: 7vh;
-    height: 7vh;
+    width: calc(8vh - 8px);
+    height: calc(8vh - 8px);
     pointer-events: none;
   }
 
   svg {
     stroke: #373737;
-    stroke-width: 0.2vh;
-
-    ${props =>
-      props.color &&
-      css`
-        stroke-width: 0.1vh;
-        fill: ${props.color};
-      `}
+    stroke-width: 0.1vh;
   }
 
   &:hover {
-    background-color: #f4f6f8;
-    border-color: #ffd67b;
+    box-shadow: rgb(0 0 0 / 20%) 0px 3px 3px -2px, rgb(0 0 0 / 14%) 0px 3px 4px 0px,
+      rgb(0 0 0 / 12%) 0px 1px 8px 0px;
   }
-
-  ${props =>
-    props.isHighlighted &&
-    css`
-      background-color: #ffd67b;
-      border-color: #ffd67b;
-
-      &:hover {
-        background-color: #ffd67b;
-        border-color: #ffd67b;
-      }
-    `}
 `;

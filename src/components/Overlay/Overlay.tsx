@@ -105,6 +105,7 @@ const SectorImage = styled.img`
 
 const MessageText = styled.div`
   color: #373737;
+  text-align: center;
 `;
 
 const CloseButton = styled.div<{ color: string }>`
