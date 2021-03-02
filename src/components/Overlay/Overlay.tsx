@@ -20,7 +20,16 @@ export const Overlay: FC<Props> = props => {
   useEffect(() => {
     if (selectedSector) {
       const message = roller.draw(selectedSector.type) || 'Упс :(';
-      setMessageToShow(message);
+
+      switch (selectedSector.contentType) {
+        case 'image':
+          setMessageToShow('Image');
+          break;
+
+        default:
+          setMessageToShow(message);
+          break;
+      }
     } else {
       if (messageToShow) {
         playHide();

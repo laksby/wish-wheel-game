@@ -13,7 +13,7 @@ const IndexPage: FC = () => {
   const records = useRecords();
   const tracks = ['/sound/spin-1.mp3', '/sound/spin-2.mp3', '/sound/spin-3.mp3'];
 
-  const [running, setRunning] = useState(false);
+  const [sectorType, setSectorType] = useState('');
   const [selectedSector, setSelectedSector] = useState<SectorData>();
   const [trackIndex, setTrackIndex] = useState(0);
   const [modeType, setModeType] = useState<ModeType>('light');
@@ -25,9 +25,11 @@ const IndexPage: FC = () => {
     Reflect.set(window, '__ROLLER__', roller);
   }, [roller]);
 
-  const toggleRunning = useCallback(() => {
-    setRunning(r => !r);
-  }, []);
+  const toggleSectorType = useCallback(() => {
+    setSectorType(r =>
+      r ? '' : roller.draw(modeType === 'light' ? 'script-girl' : 'script-man') || '',
+    );
+  }, [roller, modeType]);
 
   const toggleMode = useCallback(() => {
     setModeType(m => (m === 'light' ? 'hard' : 'light'));
@@ -35,7 +37,7 @@ const IndexPage: FC = () => {
 
   const toggleTrack = useCallback(() => {
     setTrackIndex(s => (s < tracks.length - 1 ? s + 1 : 0));
-  }, []);
+  }, [tracks]);
 
   const clearSector = useCallback(() => {
     setSelectedSector(undefined);
@@ -46,24 +48,24 @@ const IndexPage: FC = () => {
       switch (type) {
         case 'play':
           if (!selectedSector) {
-            toggleRunning();
+            toggleSectorType();
           } else {
             clearSector();
           }
           break;
         case 'set-sound':
-          if (!running) {
+          if (!sectorType) {
             toggleTrack();
           }
           break;
         case 'set-mode':
-          if (!running) {
+          if (!sectorType) {
             toggleMode();
           }
           break;
       }
     },
-    [selectedSector, running, modeType],
+    [selectedSector, sectorType, modeType],
   );
 
   return (
@@ -71,8 +73,8 @@ const IndexPage: FC = () => {
       <SEO />
       <Wheel
         isFaded={!!selectedSector}
-        isRunning={running}
-        onRunningToggle={toggleRunning}
+        stopSector={sectorType}
+        onRunningToggle={toggleSectorType}
         onSelect={setSelectedSector}
         spinSound={tracks[trackIndex]}
         mode={mode}
@@ -108,7 +110,7 @@ const IndexPage: FC = () => {
         onClick={handleControlClick}
         controls={[
           {
-            text: running ? (
+            text: sectorType ? (
               <img src={pauseImage} alt="" aria-hidden />
             ) : (
               <img src={playImage} alt="" aria-hidden />

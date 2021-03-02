@@ -1,1 +1,1 @@
-export type SectorContentType = 'image';
+export type SectorContentType = 'text' | 'image';

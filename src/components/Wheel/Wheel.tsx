@@ -2,11 +2,11 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import useSound from 'use-sound';
 import { ModeData, SectorData } from '../../common';
-import { getRotationFromMatrixNotation, getSectorCenter, getSectorPath } from './tools';
+import { getSectorCenter, getSectorPath } from './tools';
 
 interface Props {
   isFaded: boolean;
-  isRunning: boolean;
+  stopSector: string;
   mode: ModeData;
   spinSound: string;
   onRunningToggle(): void;
@@ -14,16 +14,17 @@ interface Props {
 }
 
 export const Wheel: FC<Props> = props => {
-  const { isFaded, isRunning, mode, spinSound, onRunningToggle, onSelect } = props;
+  const { isFaded, stopSector, mode, spinSound, onRunningToggle, onSelect } = props;
   const sectorCount = mode.sectors.length;
 
   const [playSpin, { stop: stopSpin }] = useSound(spinSound, { volume: 0.4 });
   const [rotation, setRotation] = useState(0);
   const circleRef = useRef<SVGGElement>(undefined!);
+  const prevSectorRef = useRef<string>();
 
   const animationSpeed = 300;
   const sectorStep = 360 / sectorCount;
-  const sectorPosition = -sectorStep / 2;
+  const sectorsStartPosition = -sectorStep / 2;
   const side = 300;
   const padding = 6;
   const center = side / 2;
@@ -45,7 +46,8 @@ export const Wheel: FC<Props> = props => {
       return;
     }
 
-    if (isRunning) {
+    if (stopSector) {
+      prevSectorRef.current = stopSector;
       playSpin();
       circleRef.current.animate([{ transform: 'rotate(0)' }, { transform: 'rotate(360deg)' }], {
         duration: animationSpeed,
@@ -55,18 +57,18 @@ export const Wheel: FC<Props> = props => {
       stopSpin();
       const [animation] = circleRef.current.getAnimations();
       if (animation) {
-        const circleStyle = getComputedStyle(circleRef.current, null);
-        const rotation = getRotationFromMatrixNotation(circleStyle.getPropertyValue('transform'));
-        animation.cancel();
+        const requiredSectorIndex = mode.sectors.findIndex(s => s.type === prevSectorRef.current);
 
-        setRotation(rotation);
+        if (requiredSectorIndex >= 0) {
+          const requiresSectorRotation = requiredSectorIndex * sectorStep;
 
-        const sectorIndex = Math.floor((rotation - sectorPosition) / sectorStep) % sectorCount;
-        const sector = mode.sectors[sectorIndex];
-        onSelect(sector);
+          onSelect(mode.sectors[requiredSectorIndex]);
+          setRotation(requiresSectorRotation);
+          animation.cancel();
+        }
       }
     }
-  }, [isRunning, onSelect]);
+  }, [stopSector, onSelect]);
 
   return (
     <Container scale={1} isFaded={isFaded}>
@@ -91,7 +93,7 @@ export const Wheel: FC<Props> = props => {
               center,
               center,
               outerRadius * 2 - imageSize * 3,
-              sectorPosition + sectorStep / 2 + index * sectorStep,
+              sectorsStartPosition + sectorStep / 2 + index * sectorStep,
             );
             return (
               <g key={index}>
@@ -100,8 +102,8 @@ export const Wheel: FC<Props> = props => {
                     center,
                     center,
                     innerRadius,
-                    sectorPosition + index * sectorStep,
-                    sectorPosition + (index + 1) * sectorStep,
+                    sectorsStartPosition + index * sectorStep,
+                    sectorsStartPosition + (index + 1) * sectorStep,
                   )}
                   fill={sector.color}
                   strokeWidth={strokeWidth}
