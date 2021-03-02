@@ -1,15 +1,8 @@
 import { useMemo } from 'react';
 import { ModeData, ModeType } from '../common';
-import hmWeightImage from '../images/hard-mode/sectors/004-weight.svg';
-import hmHorseImage from '../images/hard-mode/sectors/007-horse.svg';
-import hmPlungerImage from '../images/hard-mode/sectors/008-plunger.svg';
-import hmRocketImage from '../images/hard-mode/sectors/022-rocket.svg';
-import hmExtinguisherImage from '../images/hard-mode/sectors/045-extinguisher.svg';
-import hmDynamiteImage from '../images/hard-mode/sectors/046-dynamite.svg';
-import hmCannonImage from '../images/hard-mode/sectors/054-cannon.svg';
-import hmCampImage from '../images/hard-mode/sectors/057-camp.svg';
-import hmBowImage from '../images/hard-mode/sectors/060-bow.svg';
-import hmBombImage from '../images/hard-mode/sectors/062-bomb.svg';
+import hmGuessImage from '../images/hard-mode/sectors/bandit.svg';
+import hmTaskImage from '../images/hard-mode/sectors/cards.svg';
+import hmDrinkImage from '../images/hard-mode/sectors/whisky.svg';
 import hmWheelButton from '../images/hard-mode/wheel-button.svg';
 import lmFoodImage from '../images/light-mode/sectors/candy.svg';
 import lmTaskImage from '../images/light-mode/sectors/cards.svg';
@@ -44,16 +37,10 @@ export function useMode(modeType: ModeType): ModeData {
           centerButtonImage: hmWheelButton,
           frameColor: '#384949',
           sectors: [
-            { color: '#B6B7B9', image: hmWeightImage, type: 'weight' },
-            { color: '#A49F9C', image: hmDynamiteImage, type: 'dynamite' },
-            { color: '#B0BAC2', image: hmRocketImage, type: 'rocket' },
-            { color: '#CBCDCC', image: hmCannonImage, type: 'cannon' },
-            { color: '#AFAFAF', image: hmHorseImage, type: 'horse' },
-            { color: '#C7C7C7', image: hmCampImage, type: 'camp' },
-            { color: '#797979', image: hmBombImage, type: 'bomb' },
-            { color: '#9B9EA4', image: hmBowImage, type: 'bow' },
-            { color: '#B9B9B9', image: hmExtinguisherImage, type: 'extinguisher' },
-            { color: '#CBCCCE', image: hmPlungerImage, type: 'plunger' },
+            { color: '#B6B7B9', image: hmDrinkImage, type: 'man-drink' },
+            { color: '#A49F9C', image: hmTaskImage, type: 'man-task' },
+            { color: '#B0BAC2', image: hmGuessImage, type: 'man-guess' },
+            { color: '#CBCDCC', image: hmTaskImage, type: 'man-task' },
           ],
         };
     }
