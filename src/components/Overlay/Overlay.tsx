@@ -4,13 +4,14 @@ import useSound from 'use-sound';
 import { RandomRoller, SectorData } from '../../common';
 
 interface Props {
+  slideIndex?: number;
   selectedSector?: SectorData;
   roller: RandomRoller<string>;
   onClose(): void;
 }
 
 export const Overlay: FC<Props> = props => {
-  const { selectedSector, roller, onClose } = props;
+  const { slideIndex = 0, selectedSector, roller, onClose } = props;
   const [messageToShow, setMessageToShow] = useState<string | [string, string]>('');
 
   const [playHide] = useSound('/sound/hide.mp3', {
@@ -53,7 +54,7 @@ export const Overlay: FC<Props> = props => {
             <MessageText>{messageToShow}</MessageText>
           ) : (
             <MessageImageWrapper>
-              <img src={`/img/${messageToShow[0]}`} alt="" aria-hidden />
+              <img src={`/img/${messageToShow[slideIndex]}`} alt="" aria-hidden />
             </MessageImageWrapper>
           )}
           <CloseButton onClick={onClose} color={selectedSector.color}>

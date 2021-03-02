@@ -13,6 +13,7 @@ const IndexPage: FC = () => {
   const records = useRecords();
   const tracks = ['/sound/spin-1.mp3', '/sound/spin-2.mp3', '/sound/spin-3.mp3'];
 
+  const [slideIndex, setSlideIndex] = useState(0);
   const [sectorType, setSectorType] = useState('');
   const [selectedSector, setSelectedSector] = useState<SectorData>();
   const [trackIndex, setTrackIndex] = useState(0);
@@ -43,14 +44,27 @@ const IndexPage: FC = () => {
     setSelectedSector(undefined);
   }, []);
 
+  const handleSelectSector = useCallback((sector: SectorData) => {
+    setSelectedSector(sector);
+  }, []);
+
   const handleControlClick = useCallback(
     (type: string) => {
       switch (type) {
         case 'play':
-          if (!selectedSector) {
-            toggleSectorType();
+          if (selectedSector) {
+            if (selectedSector.contentType === 'image') {
+              if (slideIndex < 1) {
+                setSlideIndex(1);
+              } else {
+                setSlideIndex(0);
+                clearSector();
+              }
+            } else {
+              clearSector();
+            }
           } else {
-            clearSector();
+            toggleSectorType();
           }
           break;
         case 'set-sound':
@@ -65,7 +79,7 @@ const IndexPage: FC = () => {
           break;
       }
     },
-    [selectedSector, sectorType, modeType],
+    [selectedSector, sectorType, modeType, slideIndex],
   );
 
   return (
@@ -75,7 +89,7 @@ const IndexPage: FC = () => {
         isFaded={!!selectedSector}
         stopSector={sectorType}
         onRunningToggle={toggleSectorType}
-        onSelect={setSelectedSector}
+        onSelect={handleSelectSector}
         spinSound={tracks[trackIndex]}
         mode={mode}
       />
@@ -138,7 +152,12 @@ const IndexPage: FC = () => {
           },
         ]}
       />
-      <Overlay selectedSector={selectedSector} roller={roller} onClose={clearSector} />
+      <Overlay
+        slideIndex={slideIndex}
+        selectedSector={selectedSector}
+        roller={roller}
+        onClose={clearSector}
+      />
     </Layout>
   );
 };

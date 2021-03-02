@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: 'Колесо Желаний',
+    title: 'Колесо Фортуны',
     description: 'Игра, подготовленная специально к празднованию 8 марта',
   },
   plugins: [
