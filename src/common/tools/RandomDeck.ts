@@ -29,7 +29,7 @@ export class RandomDeck<T> {
   }
 
   private tryLoadFromStorage(): void {
-    if (!this.storageName) {
+    if (!this.storageName || !sessionStorage) {
       return;
     }
 
@@ -38,7 +38,7 @@ export class RandomDeck<T> {
   }
 
   private trySaveToStorage(): void {
-    if (!this.storageName) {
+    if (!this.storageName || !sessionStorage) {
       return;
     }
 
