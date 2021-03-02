@@ -16,7 +16,7 @@ import lmTaskImage from '../images/light-mode/sectors/cards.svg';
 import lmPrizeImage from '../images/light-mode/sectors/confetti.svg';
 import lmDrinkImage from '../images/light-mode/sectors/drink.svg';
 import lmManImage from '../images/light-mode/sectors/magician.svg';
-import lmLuckImage from '../images/light-mode/sectors/reward.svg';
+import lmPhotoImage from '../images/light-mode/sectors/reward.svg';
 import lmWheelButton from '../images/light-mode/wheel-button.svg';
 
 export function useMode(modeType: ModeType): ModeData {
@@ -30,7 +30,7 @@ export function useMode(modeType: ModeType): ModeData {
             { color: '#F4F6F8', image: lmTaskImage, type: 'girl-task' },
             { color: '#FFD67B', image: lmDrinkImage, type: 'girl-drink' },
             { color: '#F4F6F8', image: lmTaskImage, type: 'girl-task' },
-            { color: '#EB5463', image: lmLuckImage, type: 'girl-luck' },
+            { color: '#EB5463', image: lmPhotoImage, type: 'girl-photo' },
             { color: '#F4F6F8', image: lmTaskImage, type: 'girl-task' },
             { color: '#EB86BE', image: lmFoodImage, type: 'girl-food' },
             { color: '#F4F6F8', image: lmTaskImage, type: 'girl-task' },
