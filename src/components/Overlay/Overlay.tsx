@@ -11,7 +11,7 @@ interface Props {
 
 export const Overlay: FC<Props> = props => {
   const { selectedSector, roller, onClose } = props;
-  const [messageToShow, setMessageToShow] = useState<string>();
+  const [messageToShow, setMessageToShow] = useState<string | [string, string]>('');
 
   const [playHide] = useSound('/sound/hide.mp3', {
     volume: 0.4,
@@ -23,7 +23,7 @@ export const Overlay: FC<Props> = props => {
 
       switch (selectedSector.contentType) {
         case 'image':
-          setMessageToShow('Image');
+          setMessageToShow(message.split(':') as [string, string]);
           break;
 
         default:
@@ -45,9 +45,17 @@ export const Overlay: FC<Props> = props => {
     <OverlayContainer>
       <OverlayBackground color={selectedSector.color} />
       <OverlayContentWrapper>
-        <OverlayContent color={selectedSector.color}>
-          <SectorImage src={selectedSector.image} alt="Sector image" aria-hidden />
-          <MessageText>{messageToShow}</MessageText>
+        <OverlayContent color={selectedSector.color} isPicture={typeof messageToShow === 'object'}>
+          {typeof messageToShow === 'string' && (
+            <SectorImage src={selectedSector.image} alt="Sector image" aria-hidden />
+          )}
+          {typeof messageToShow === 'string' ? (
+            <MessageText>{messageToShow}</MessageText>
+          ) : (
+            <MessageImageWrapper>
+              <img src={`/img/${messageToShow[0]}`} alt="" aria-hidden />
+            </MessageImageWrapper>
+          )}
           <CloseButton onClick={onClose} color={selectedSector.color}>
             Продолжить
           </CloseButton>
@@ -89,13 +97,13 @@ const OverlayContentWrapper = styled.div`
   justify-content: center;
 `;
 
-const OverlayContent = styled.div<{ color: string }>`
+const OverlayContent = styled.div<{ color: string; isPicture: boolean }>`
   box-sizing: border-box;
-  padding: 4vh;
+  padding: ${props => (props.isPicture ? '0.5vh' : '4vh')};
   background-color: ${props => props.color};
-  border-radius: 50%;
-  width: 75vh;
-  height: 75vh;
+  border-radius: ${props => (props.isPicture ? '4vh' : '50%')};
+  width: ${props => (props.isPicture ? 'auto' : '75vh')};
+  height: ${props => (props.isPicture ? '90vh' : '75vh')};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -108,8 +116,8 @@ const OverlayContent = styled.div<{ color: string }>`
 `;
 
 const SectorImage = styled.img`
-  width: 16vh;
-  height: 16vh;
+  width: 8vh;
+  height: 8vh;
 `;
 
 const MessageText = styled.div`
@@ -117,7 +125,26 @@ const MessageText = styled.div`
   text-align: center;
 `;
 
+const MessageImageWrapper = styled.div`
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 3vh;
+  box-shadow: rgb(0 0 0 / 20%) 0px 3px 3px -2px, rgb(0 0 0 / 14%) 0px 3px 4px 0px,
+    rgb(0 0 0 / 12%) 0px 1px 8px 0px;
+
+  img {
+    width: 50vw;
+    height: 50vw;
+    object-position: center;
+    object-fit: cover;
+  }
+`;
+
 const CloseButton = styled.div<{ color: string }>`
+  box-sizing: border-box;
   padding: 1vh 2vh;
   background-color: #f4f6f8aa;
   border: 0.25vh solid #373737;
@@ -133,7 +160,6 @@ const CloseButton = styled.div<{ color: string }>`
   justify-content: center;
   user-select: none;
   transition: background-color 300ms;
-  margin-top: 10vh;
 
   &:hover {
     background-color: #f4f6f8;
