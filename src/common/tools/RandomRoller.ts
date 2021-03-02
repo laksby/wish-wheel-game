@@ -17,6 +17,10 @@ export class RandomRoller<T> {
     );
   }
 
+  public initialize(): void {
+    this.decks.forEach(deck => deck.initialize());
+  }
+
   public draw(deckName: string): T | undefined {
     const deck = this.decks.get(deckName);
 

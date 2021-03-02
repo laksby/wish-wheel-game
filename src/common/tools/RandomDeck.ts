@@ -8,6 +8,9 @@ export class RandomDeck<T> {
     this.name = name;
     this.variants = variants;
     this.storageName = storageName;
+  }
+
+  public initialize(): void {
     this.tryLoadFromStorage();
     this.tryRefill();
   }
@@ -29,21 +32,21 @@ export class RandomDeck<T> {
   }
 
   private tryLoadFromStorage(): void {
-    if (!this.storageName || !window.sessionStorage) {
+    if (!this.storageName) {
       return;
     }
 
-    const storedContent = window.sessionStorage.getItem(this.getStorageKey());
+    const storedContent = sessionStorage.getItem(this.getStorageKey());
     this.cards = JSON.parse(storedContent || '[]');
   }
 
   private trySaveToStorage(): void {
-    if (!this.storageName || !window.sessionStorage) {
+    if (!this.storageName) {
       return;
     }
 
     const storedContent = JSON.stringify(this.cards, null, 2);
-    window.sessionStorage.setItem(this.getStorageKey(), storedContent);
+    sessionStorage.setItem(this.getStorageKey(), storedContent);
   }
 
   private getStorageKey(): string {
