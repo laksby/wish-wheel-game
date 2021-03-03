@@ -1,2 +1,5 @@
 type: girl-photo
-content: mow_1_q.png:mow_1_a.png
+content: |-
+  mow_1_q.png:mow_1_a.png
+  ---
+  mow_5_q.png:mow_5_a.png
