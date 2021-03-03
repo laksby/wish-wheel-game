@@ -100,11 +100,12 @@ const OverlayContentWrapper = styled.div`
 
 const OverlayContent = styled.div<{ color: string; isPicture: boolean }>`
   box-sizing: border-box;
-  padding: ${props => (props.isPicture ? '0.5vh' : '4vh')};
+  padding: ${props => (props.isPicture ? '0' : '4vh')};
   background-color: ${props => props.color};
   border-radius: ${props => (props.isPicture ? '4vh' : '50%')};
   width: ${props => (props.isPicture ? 'auto' : '75vh')};
   height: ${props => (props.isPicture ? '90vh' : '75vh')};
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -132,15 +133,12 @@ const MessageImageWrapper = styled.div`
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  border-radius: 3vh;
-  box-shadow: rgb(0 0 0 / 20%) 0px 3px 3px -2px, rgb(0 0 0 / 14%) 0px 3px 4px 0px,
-    rgb(0 0 0 / 12%) 0px 1px 8px 0px;
+  background-color: #ffffff;
 
   img {
-    width: 50vw;
-    height: 50vw;
+    height: 100%;
     object-position: center;
-    object-fit: cover;
+    object-fit: contain;
   }
 `;
 

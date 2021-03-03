@@ -23,7 +23,7 @@ export function useMode(modeType: ModeType): ModeData {
             { color: '#F4F6F8', image: lmTaskImage, type: 'girl-task' },
             { color: '#FFD67B', image: lmDrinkImage, type: 'girl-drink' },
             { color: '#F4F6F8', image: lmTaskImage, type: 'girl-task' },
-            { color: '#88C057', image: lmPhotoImage, type: 'girl-photo', contentType: 'image' },
+            { color: '#9579DA', image: lmPhotoImage, type: 'girl-photo', contentType: 'image' },
             { color: '#F4F6F8', image: lmTaskImage, type: 'girl-task' },
             { color: '#EB86BE', image: lmFoodImage, type: 'girl-food' },
             { color: '#F4F6F8', image: lmTaskImage, type: 'girl-task' },
