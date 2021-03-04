@@ -15,9 +15,5 @@ export const Layout: FC<Props> = props => {
     }
   }, [type]);
 
-  return (
-    <LayoutWrapper>
-      <main>{children}</main>
-    </LayoutWrapper>
-  );
+  return <LayoutWrapper>{children}</LayoutWrapper>;
 };

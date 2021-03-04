@@ -6,18 +6,30 @@ import { getSectorCenter, getSectorPath } from './tools';
 
 interface Props {
   isFaded: boolean;
+  isFinal: boolean;
   stopSector: string;
   mode: ModeData;
   spinSound: string;
   onRunningToggle(): void;
+  onFinal(): void;
   onSelect(sector: SectorData): void;
 }
 
 export const Wheel: FC<Props> = props => {
-  const { isFaded, stopSector, mode, spinSound, onRunningToggle, onSelect } = props;
+  const {
+    isFaded,
+    isFinal,
+    stopSector,
+    mode,
+    spinSound,
+    onRunningToggle,
+    onFinal,
+    onSelect,
+  } = props;
   const sectorCount = mode.sectors.length;
 
   const [playSpin, { stop: stopSpin }] = useSound(spinSound, { volume: 0.4 });
+  const [playDeath] = useSound('/sound/death.mp3', { volume: 0.4 });
   const [rotation, setRotation] = useState(0);
   const circleRef = useRef<SVGGElement>(undefined!);
   const prevSectorRef = useRef<string>();
@@ -57,14 +69,23 @@ export const Wheel: FC<Props> = props => {
       stopSpin();
       const [animation] = circleRef.current.getAnimations();
       if (animation) {
-        const requiredSectorIndex = mode.sectors.findIndex(s => s.type === prevSectorRef.current);
+        if (isFinal) {
+          playDeath();
 
-        if (requiredSectorIndex >= 0) {
-          const requiresSectorRotation = requiredSectorIndex * sectorStep;
+          setTimeout(() => {
+            animation.cancel();
+            onFinal();
+          }, 3000);
+        } else {
+          const requiredSectorIndex = mode.sectors.findIndex(s => s.type === prevSectorRef.current);
 
-          onSelect(mode.sectors[requiredSectorIndex]);
-          setRotation(requiresSectorRotation);
-          animation.cancel();
+          if (requiredSectorIndex >= 0) {
+            const requiresSectorRotation = requiredSectorIndex * sectorStep;
+
+            onSelect(mode.sectors[requiredSectorIndex]);
+            setRotation(requiresSectorRotation);
+            animation.cancel();
+          }
         }
       }
     }

@@ -1,7 +1,10 @@
 import React, { FC, useCallback, useEffect, useState } from 'react';
 import { GitHub } from 'react-feather';
+import useEffectOnce from 'react-use/lib/useEffectOnce';
+import useKeyPressEvent from 'react-use/lib/useKeyPressEvent';
+import useSound from 'use-sound';
 import { ModeType, SectorData } from '../common';
-import { Controls, Layout, Note, Overlay, SEO, Wheel } from '../components';
+import { BSOD, Controls, Layout, Note, Overlay, SEO, Wheel } from '../components';
 import { useMode, useRecords, useRoller } from '../hooks';
 import boyImage from '../images/boy.svg';
 import musicImage from '../images/compact-disc.svg';
@@ -16,11 +19,42 @@ const IndexPage: FC = () => {
 
   const [slideIndex, setSlideIndex] = useState(0);
   const [sectorType, setSectorType] = useState('');
+  const [final, setFinal] = useState(false);
+  const [gameEnded, setGameEnded] = useState(false);
   const [selectedSector, setSelectedSector] = useState<SectorData>();
   const [trackIndex, setTrackIndex] = useState(0);
   const [modeType, setModeType] = useState<ModeType>('light');
 
   const mode = useMode(modeType);
+
+  const endGame = useCallback(() => {
+    setGameEnded(true);
+  }, []);
+
+  const switchFinal = useCallback(() => {
+    setFinal(f => !f);
+    sessionStorage.setItem('game.final', !final ? 'Yes' : '');
+  }, [final]);
+
+  const [playAction, actionSound] = useSound('/sound/action.mp3', {
+    volume: 0.4,
+  });
+
+  useKeyPressEvent('a', () => {
+    if (actionSound.isPlaying) {
+      actionSound.stop();
+    } else {
+      playAction();
+    }
+  });
+
+  useKeyPressEvent('p', () => {
+    switchFinal();
+  });
+
+  useEffectOnce(() => {
+    sessionStorage.setItem('game.final', '');
+  });
 
   useEffect(() => {
     Reflect.set(window, '__ROLLER__', roller);
@@ -85,68 +119,77 @@ const IndexPage: FC = () => {
   return (
     <Layout>
       <SEO />
-      <Wheel
-        isFaded={!!selectedSector}
-        stopSector={sectorType}
-        onRunningToggle={toggleSectorType}
-        onSelect={handleSelectSector}
-        spinSound={tracks[trackIndex]}
-        mode={mode}
-      />
-      <Note position="top-left">
-        <h1>Колесо Фортуны</h1>
-      </Note>
-      <Note position="bottom-left">
-        Трек {trackIndex}
-        <br />
-        Версия: v1.0.0
-      </Note>
-      <Note position="top-right">
-        <ul>
-          {mode.sectors.map((sector, index) => (
-            <li key={index}>
-              <img src={sector.image} alt="" aria-hidden /> <span>{sector.title}</span>
-            </li>
-          ))}
-        </ul>
-      </Note>
-      <Note position="bottom-right">
-        <a href="https://github.com/laksby/wish-wheel-game" target="_blank" rel="noreferrer">
-          <GitHub />
-        </a>
-      </Note>
-      <Controls
-        onClick={handleControlClick}
-        controls={[
-          {
-            text: sectorType ? (
-              <img src={pauseImage} alt="" aria-hidden />
-            ) : (
-              <img src={playImage} alt="" aria-hidden />
-            ),
-            type: 'play',
-            payload: null,
-            key: event => event.code === 'Space',
-          },
-          {
-            text:
-              modeType === 'light' ? (
-                <img src={boyImage} alt="" aria-hidden />
-              ) : (
-                <img src={girlImage} alt="" aria-hidden />
-              ),
-            type: 'set-mode',
-            payload: null,
-            key: 'q',
-          },
-          {
-            text: <img src={musicImage} alt="" aria-hidden />,
-            type: 'set-sound',
-            payload: null,
-            key: 'm',
-          },
-        ]}
-      />
+      {gameEnded ? (
+        <BSOD />
+      ) : (
+        <>
+          <Wheel
+            isFaded={!!selectedSector}
+            isFinal={final}
+            stopSector={sectorType}
+            onRunningToggle={toggleSectorType}
+            onFinal={endGame}
+            onSelect={handleSelectSector}
+            spinSound={tracks[trackIndex]}
+            mode={mode}
+          />
+          <Note position="top-left">
+            <h1>Колесо Фортуны</h1>
+          </Note>
+          <Note position="bottom-left">
+            Трек {trackIndex} {actionSound.isPlaying ? '(action)' : ''}
+            <br />
+            Версия: v1.0.0
+          </Note>
+          <Note position="top-right">
+            <ul>
+              {mode.sectors.map((sector, index) => (
+                <li key={index}>
+                  <img src={sector.image} alt="" aria-hidden /> <span>{sector.title}</span>
+                </li>
+              ))}
+            </ul>
+          </Note>
+          <Note position="bottom-right">
+            <a href="https://github.com/laksby/wish-wheel-game" target="_blank" rel="noreferrer">
+              <GitHub />
+            </a>
+          </Note>
+          <Controls
+            onClick={handleControlClick}
+            controls={[
+              {
+                text: sectorType ? (
+                  <img src={pauseImage} alt="" aria-hidden />
+                ) : (
+                  <img src={playImage} alt="" aria-hidden />
+                ),
+                type: 'play',
+                payload: null,
+                key: event => event.code === 'Space',
+              },
+              {
+                text:
+                  modeType === 'light' ? (
+                    <img src={boyImage} alt="" aria-hidden />
+                  ) : (
+                    <img src={girlImage} alt="" aria-hidden />
+                  ),
+                type: 'set-mode',
+                payload: null,
+                key: 'q',
+              },
+              {
+                text: <img src={musicImage} alt="" aria-hidden />,
+                type: 'set-sound',
+                payload: null,
+                key: 'm',
+              },
+            ]}
+          />
+        </>
+      )}
+
       <Overlay slideIndex={slideIndex} selectedSector={selectedSector} roller={roller} />
     </Layout>
   );

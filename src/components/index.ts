@@ -3,4 +3,5 @@ export * from './Layout';
 export * from './Note';
 export * from './Overlay';
 export * from './Wheel';
+export * from './BSOD';
 export * from './SEO';
