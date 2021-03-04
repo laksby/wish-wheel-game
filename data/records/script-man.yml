@@ -2,10 +2,14 @@ type: script-man
 content: |-
   man-drink
   ---
-  man-guess
-  ---
-  man-task
+  man-drink
   ---
   man-drink
+  ---
+  man-guess
+  ---
+  man-guess
+  ---
+  man-guess
   ---
   man-task
