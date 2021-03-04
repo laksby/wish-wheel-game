@@ -37,7 +37,7 @@ const Container = styled.div<{ top: string; right: string; bottom: string; left:
   padding: 1vh;
   color: #373737;
   font-family: sans-serif;
-  max-width: 30vh;
+  max-width: 40vh;
   font-size: 1.75vh;
 
   ${props => css`
@@ -62,19 +62,20 @@ const Container = styled.div<{ top: string; right: string; bottom: string; left:
   ul {
     margin: 0;
     padding: 0;
-    margin-top: 2vh;
     list-style: none;
+    font-size: 2.5vh;
   }
 
   li {
     margin: 0;
-    padding: 1vh 0;
+    padding: 1.5vh 0;
+    display: flex;
+    align-items: center;
+    width: 35vh;
 
-    em {
-      display: block;
-      font-style: normal;
-      font-weight: 700;
-      text-transform: uppercase;
+    img {
+      height: 4vh;
+      margin-right: 2vh;
     }
   }
 

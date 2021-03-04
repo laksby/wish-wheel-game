@@ -102,17 +102,12 @@ const IndexPage: FC = () => {
         Версия: v1.0.0
       </Note>
       <Note position="top-right">
-        <h2>Горячие Клавиши</h2>
         <ul>
-          <li>
-            <em>[Пробел]</em> Вращать барабан; закрыть окно сектора
-          </li>
-          <li>
-            <em>[M]</em> Сменить звук вращения барабана
-          </li>
-          <li>
-            <em>[Q]</em> Сменить режим мальчик/девочка
-          </li>
+          {mode.sectors.map((sector, index) => (
+            <li key={index}>
+              <img src={sector.image} alt="" aria-hidden /> <span>{sector.title}</span>
+            </li>
+          ))}
         </ul>
       </Note>
       <Note position="bottom-right">
@@ -152,12 +147,7 @@ const IndexPage: FC = () => {
           },
         ]}
       />
-      <Overlay
-        slideIndex={slideIndex}
-        selectedSector={selectedSector}
-        roller={roller}
-        onClose={clearSector}
-      />
+      <Overlay slideIndex={slideIndex} selectedSector={selectedSector} roller={roller} />
     </Layout>
   );
 };
