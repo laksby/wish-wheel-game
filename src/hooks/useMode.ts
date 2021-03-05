@@ -45,7 +45,7 @@ export function useMode(modeType: ModeType): ModeData {
               title: 'Трогательный сектор',
             },
             { color: '#F4F6F8', image: lmTask5Image, type: 'girl-task', title: 'Фант-сектор' },
-            { color: '#f46262', image: lmManImage, type: 'girl-man', title: 'Мужской сектор' },
+            { color: '#ff7956', image: lmManImage, type: 'girl-man', title: 'Мужской сектор' },
           ],
         };
       case 'hard':

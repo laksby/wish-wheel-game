@@ -125,6 +125,7 @@ const MessageText = styled.div`
   align-items: center;
   align-content: center;
   padding-bottom: 8vh;
+  font-size: 6vh;
 `;
 
 const MessageImageWrapper = styled.div`
